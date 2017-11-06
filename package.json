@@ -1,0 +1,19 @@
+{
+  "name": "turn-based-wss",
+  "version": "0.0.1",
+  "description": "turn based wss",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webbestmaster/turn-based-wss.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webbestmaster/turn-based-wss/issues"
+  },
+  "homepage": "https://github.com/webbestmaster/turn-based-wss#readme"
+}
