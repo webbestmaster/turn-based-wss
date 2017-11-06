@@ -56,6 +56,8 @@ class Server {
             });
 
             socketIoServer.on('connection', socket => {
+                console.log(`Client connected [id=${socket.id}]`);
+
                 socket.on('disconnect', () => {
                     console.log('user disconnected');
                 });
