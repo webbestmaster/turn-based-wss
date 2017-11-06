@@ -1,0 +1,4 @@
+// add /api/connect-to-room/:roomId
+
+// test websocket
+http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/
