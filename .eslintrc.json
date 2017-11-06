@@ -327,10 +327,14 @@
             {
                 "beforeBlockComment": true,
                 "afterBlockComment": false,
-                "beforeLineComment": false,
+                "beforeLineComment": true,
                 "afterLineComment": false,
-                "allowBlockStart": false,
-                "allowBlockEnd": false
+                "allowBlockStart": true,
+                "allowBlockEnd": true,
+                "allowObjectStart": true,
+                "allowObjectEnd": true,
+                "allowArrayStart": true,
+                "allowArrayEnd": true
             }
         ],
         "linebreak-style": [
