@@ -20,10 +20,23 @@
     jQuery(function () {
         const userConnection = new window.UserConnection();
 
-        userConnection.connect('http://172.21.2.191:3000').then(() => {
-            console.log('connected');
-            console.log(userConnection.getAttr());
-        });
+        const url = 'http://172.21.2.191:3000';
+
+        userConnection
+            .connect(url)
+            .then(() => {
+                console.log('connected');
+                console.log(userConnection.getAttr());
+
+                return fetch(url + '/api/room/create');
+            })
+            .then(data => data.json())
+            .then(roomData => fetch(url + '/api/room/join/' + roomData.roomId +  '/' + userConnection.getId() + '/' +  userConnection.getSocket().id))
+            .then(data => data.json())
+            .then(joinResult => {
+                debugger
+            })
+        ;
 
     });
 </script>

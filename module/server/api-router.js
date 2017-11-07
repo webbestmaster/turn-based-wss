@@ -1,4 +1,6 @@
 const Room = require('./../room').Room;
+
+// const UserConnection = require('./../user-connection').UserConnection;
 const roomMaster = require('./../room/master').roomMaster;
 const bodyParser = require('body-parser');
 
@@ -21,7 +23,7 @@ module.exports.apiRouter = {
          *      roomId: {number} - room's id
          * }
          */
-        expressApp.get('/api/create-room', (req, res) => {
+        expressApp.get('/api/room/create', (req, res) => {
             const room = new Room();
 
             res.json({roomId: room.getId()});
@@ -32,18 +34,56 @@ module.exports.apiRouter = {
          *      roomIds: {string[]} - list of room's ids, example: ['1', '2', '11']
          * }
          */
-        expressApp.get('/api/get-room-ids', (req, res) => {
+        expressApp.get('/api/room/get-ids', (req, res) => {
             res.json({roomIds: roomMaster.getRoomIds()});
         });
 
+        /*
+                /!**
+                 * return {
+                 *      empty object
+                 * }
+                 *!/
+                expressApp.post('/api/register-user-connection', (req, res) => {
+                    // create/resolve new user connection here
+                    const userConnection = new UserConnection({
+                        socketId: req.body.socketId,
+                        id: req.body.userConnectionId
+                    });
+
+                    res.json({
+                        userConnection: {
+                            id: userConnection.getId(),
+                            socketId: userConnection.getSocketId()
+                        }
+                    });
+                });
+        */
+
+
         /**
-         * return {
-         *      empty object
-         * }
+         * join to room
          */
-        expressApp.post('/api/register-user-connection', (req, res) => {
-            // create/resolve new user connection here
-            res.json({});
+        expressApp.get('/api/room/join/:roomId/:userId/:socketId', (req, res) => {
+            const {params} = req;
+            const {roomId, userId, socketId} = params;
+            const room = roomMaster.getRoomById(roomId);
+
+            if (!room) {
+                res.json({
+                    error: {
+                        message: 'room not found, room id: ' + roomId
+                    }
+                });
+                return;
+            }
+
+            room.join({
+                userId,
+                socketId
+            });
+
+            res.json({roomId, userId, socketId});
         });
     }
 };

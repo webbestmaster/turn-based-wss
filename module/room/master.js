@@ -1,3 +1,5 @@
+const find = require('lodash/find');
+
 class RoomMaster {
     constructor() {
         const roomMaster = this;
@@ -12,6 +14,13 @@ class RoomMaster {
         const rooms = roomMaster.getRooms();
 
         rooms.push(room);
+    }
+
+    getRoomById(roomId) {
+        const roomMaster = this;
+        const rooms = roomMaster.getRooms();
+
+        return find(rooms, room => room.getId() === roomId);
     }
 
     getRoomIds() {

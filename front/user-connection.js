@@ -35,17 +35,7 @@ class UserConnection {
 
             userConnection.getAttr().socket = socket;
 
-            socket.on('connect', () => {
-                jQuery
-                    .post(
-                        userConnection.getConnectUrl() + '/api/register-user-connection',
-                        {
-                            userConnectionId: userConnection.getId(),
-                            socketId: userConnection.getSocket().id
-                        }
-                    )
-                    .done(resolve);
-            });
+            socket.on('connect', resolve);
         });
     }
 

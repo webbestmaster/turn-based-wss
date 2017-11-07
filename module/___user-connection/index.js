@@ -5,14 +5,14 @@ class UserConnection {
      *
      * @param {Object} options - options for new TBW
      *      @param {string} options.id - user's id
-     *      @param {object} options.socket - socket io connection
+     *      @param {string} options.socketId - socket io connection
      */
     constructor(options) {
         const userConnection = this;
 
         userConnection._attr = { // eslint-disable-line no-underscore-dangle, id-match
             id: options.id,
-            socket: options.socket
+            socketId: options.socketId
         };
 
         userConnectionMaster.push(userConnection);
@@ -22,8 +22,8 @@ class UserConnection {
         return this.getAttr().id;
     }
 
-    getSocket() {
-        return this.getAttr().socket;
+    getSocketId() {
+        return this.getAttr().socketId;
     }
 
     getAttr() {
