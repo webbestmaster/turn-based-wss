@@ -38,29 +38,6 @@ module.exports.apiRouter = {
             res.json({roomIds: roomMaster.getRoomIds()});
         });
 
-        /*
-                /!**
-                 * return {
-                 *      empty object
-                 * }
-                 *!/
-                expressApp.post('/api/register-user-connection', (req, res) => {
-                    // create/resolve new user connection here
-                    const userConnection = new UserConnection({
-                        socketId: req.body.socketId,
-                        id: req.body.userConnectionId
-                    });
-
-                    res.json({
-                        userConnection: {
-                            id: userConnection.getId(),
-                            socketId: userConnection.getSocketId()
-                        }
-                    });
-                });
-        */
-
-
         /**
          * join to room
          */
@@ -94,6 +71,76 @@ module.exports.apiRouter = {
             });
 
             res.json({roomId, userId, socketId});
+        });
+
+        /**
+         * take a turn
+         */
+        expressApp.get('/api/room/take-turn/:roomId/:userId', (req, res) => {
+            const {params} = req;
+            const {roomId, userId} = params;
+
+            if (!roomId || !userId) {
+                res.json({
+                    error: {
+                        message: 'Can not take turn by url: /api/room/take-turn/' + roomId + '/' + userId
+                    }
+                });
+                return;
+            }
+
+            const room = roomMaster.getRoomById(roomId);
+
+            if (!room) {
+                res.json({
+                    error: {
+                        message: 'Room not found, room id: ' + roomId
+                    }
+                });
+                return;
+            }
+
+            const activeUserId = room.giveTurn(userId);
+
+            res.json({
+                roomId,
+                activeUserId
+            });
+        });
+
+        /**
+         * leave a turn
+         */
+        expressApp.get('/api/room/leave-turn/:roomId/:userId', (req, res) => {
+            const {params} = req;
+            const {roomId, userId} = params;
+
+            if (!roomId || !userId) {
+                res.json({
+                    error: {
+                        message: 'Can not take turn by url: /api/room/take-turn/' + roomId + '/' + userId
+                    }
+                });
+                return;
+            }
+
+            const room = roomMaster.getRoomById(roomId);
+
+            if (!room) {
+                res.json({
+                    error: {
+                        message: 'Room not found, room id: ' + roomId
+                    }
+                });
+                return;
+            }
+
+            const activeUserId = room.takeAwayTurn(userId);
+
+            res.json({
+                roomId,
+                activeUserId
+            });
         });
     }
 };

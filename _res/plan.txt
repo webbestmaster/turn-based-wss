@@ -1,4 +1,10 @@
-// add /api/connect-to-room/:roomId
+вынести все роуты api-route в отдельную папку и разбить по файлам
+добавить метод /api/room/push-state/:roomId/:userId
+в теле метода передовать новое состояние - по сути просто объект
+
+добавить метод /api/room/get-users/:roomId
+возвращать всех юзеров по порядку - у всех юзеров захешировать userId
+
 
 // test websocket
 http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/

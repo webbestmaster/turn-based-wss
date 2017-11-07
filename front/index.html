@@ -34,7 +34,10 @@
             .then(roomData => fetch(url + '/api/room/join/' + roomData.roomId +  '/' + userConnection.getId() + '/' +  userConnection.getSocket().id))
             .then(data => data.json())
             .then(joinResult => {
-                debugger
+                const {roomId, userId, socketId} = joinResult;
+
+
+
             })
         ;
 

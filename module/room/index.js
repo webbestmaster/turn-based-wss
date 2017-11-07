@@ -11,10 +11,35 @@ class Room {
 
         room._attr = { // eslint-disable-line no-underscore-dangle, id-match
             connections: [],
-            id: roomId.toString()
+            id: roomId.toString(),
+            activeUserId: null
         };
 
         roomMaster.push(room);
+    }
+
+    giveTurn(userId) {
+        const room = this;
+        const activeUserId = room.getAttr().activeUserId;
+
+        if (activeUserId === null) {
+            room.getAttr().activeUserId = userId;
+            return userId;
+        }
+
+        return activeUserId;
+    }
+
+    takeAwayTurn(userId) {
+        const room = this;
+        const activeUserId = room.getAttr().activeUserId;
+
+        if (activeUserId === userId) {
+            room.getAttr().activeUserId = null;
+            return null;
+        }
+
+        return activeUserId;
     }
 
     join(roomConnectionOptions) {
