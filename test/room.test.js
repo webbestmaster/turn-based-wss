@@ -9,7 +9,7 @@ const serverOptions = {
 
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('api/room', () => {
+describe('/api/room/*', () => {
     let server = null;
 
     beforeEach(() => {
@@ -38,5 +38,17 @@ describe('api/room', () => {
 
         assert(roomIds.length === 5); // see above - exact 5 rooms
         assert(roomIds.every(roomId => typeof roomId === 'string'));
+    });
+
+    it('create and join to room', async () => {
+        const createRoomResult = await util.get(url + '/api/room/create');
+
+        const roomId = JSON.parse(createRoomResult).roomId;
+
+        const joinRoomResult = await util.get(url + '/api/room/join/' + roomId + '/some-user-id/some-socket-id');
+
+        assert(JSON.parse(joinRoomResult).hasOwnProperty('roomId'));
+        assert(JSON.parse(joinRoomResult).hasOwnProperty('userId'));
+        assert(JSON.parse(joinRoomResult).hasOwnProperty('socketId'));
     });
 });

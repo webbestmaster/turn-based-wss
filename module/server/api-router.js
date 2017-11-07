@@ -67,12 +67,22 @@ module.exports.apiRouter = {
         expressApp.get('/api/room/join/:roomId/:userId/:socketId', (req, res) => {
             const {params} = req;
             const {roomId, userId, socketId} = params;
+
+            if (!roomId || !userId || !socketId) {
+                res.json({
+                    error: {
+                        message: 'Can not join to room by url: /api/room/join/' + roomId + '/' + userId + '/' + socketId
+                    }
+                });
+                return;
+            }
+
             const room = roomMaster.getRoomById(roomId);
 
             if (!room) {
                 res.json({
                     error: {
-                        message: 'room not found, room id: ' + roomId
+                        message: 'Room not found, room id: ' + roomId
                     }
                 });
                 return;
