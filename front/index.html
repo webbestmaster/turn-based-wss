@@ -7,21 +7,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TBW</title>
 
+    <script src="./user-connection.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
-    <script src="./api-methods.js"></script>
+    <!--<script src="./api-methods.js"></script>-->
 
 </head>
 <body>
 
 <script>
-    $(function () {
-        var socket = io('http://localhost:3000');
+    jQuery(function () {
+        const userConnection = new window.UserConnection();
 
-//        socket.on('chat message', function(msg){
-//            $('#messages').append($('<li>').text(msg));
-//        });
+        userConnection.connect('http://172.21.2.191:3000').then(() => {
+            console.log('connected');
+            console.log(userConnection.getAttr());
+        });
+
     });
 </script>
 

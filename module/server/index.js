@@ -4,8 +4,10 @@ const http = require('http');
 const socketIo = require('socket.io');
 const apiRouter = require('./api-router').apiRouter;
 const roomMaster = require('./../room/master').roomMaster;
+
 const serverDefaultOptions = {
-    port: 3000
+    port: 3000,
+    'static': 'static'
 };
 
 class Server {
@@ -13,6 +15,7 @@ class Server {
      *
      * @param {Object} options - options for new TBW
      *      @param {number} options.port - port to lister
+     *      @param {string} options.static - path to static files
      */
     constructor(options) {
         const server = this;
@@ -48,6 +51,8 @@ class Server {
 
             // console.log('TBW has bean run.');
 
+            server.getExpressApp().use(express.static(server.getOptions().static));
+
             apiRouter.bindRoutes(server);
 
             httpServer.listen(options.port, () => {
@@ -56,6 +61,10 @@ class Server {
             });
 
             socketIoServer.on('connection', socket => {
+                socket.emit('setup-socket-id', {
+                    socketId: socket.id
+                });
+
                 console.log(`Client connected [id=${socket.id}]`);
 
                 socket.on('disconnect', () => {
@@ -66,6 +75,7 @@ class Server {
                     // socket.broadcast.emit('chat message', msg); // for every one, except me
                     socketIoServer.emit('chat message', msg); // every one and me too
                 });
+
                 console.log('a user connected');
             });
         });
