@@ -9,6 +9,6 @@ module.exports.postAsJson = (url, params) =>
         request.post(
             {
                 url,
-                form: JSON.stringify(params)
+                form: params
             },
             (error, response, body) => error ? reject(error) : resolve(JSON.parse(body))));

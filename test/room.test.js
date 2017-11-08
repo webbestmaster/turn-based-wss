@@ -67,19 +67,20 @@ describe('/api/room/*', () => {
     });
 
     it('join to room', async () => {
+        const socketId = 'some-socket-id';
         const joinRoomResult = await util
-            .getAsJson(url + '/api/room/join/' + roomData.roomId + '/' + userData.userId + '/some-socket-id');
+            .getAsJson(url + '/api/room/join/' + roomData.roomId + '/' + userData.userId + '/' + socketId);
 
-        assert(typeof joinRoomResult.roomId === 'string');
-        assert(typeof joinRoomResult.userId === 'string');
-        assert(typeof joinRoomResult.socketId === 'string');
+        assert(joinRoomResult.roomId === roomData.roomId);
+        assert(joinRoomResult.userId === userData.userId);
+        assert(joinRoomResult.socketId === socketId);
     });
 
     it('take turn of room', async () => {
         const takeTurnRoomResult = await util
             .getAsJson(url + '/api/room/take-turn/' + roomData.roomId + '/' + userData.userId);
 
-        assert(typeof takeTurnRoomResult.roomId === 'string');
+        assert(takeTurnRoomResult.roomId === roomData.roomId);
         assert(typeof takeTurnRoomResult.activeUserId === 'string');
     });
 
@@ -87,7 +88,7 @@ describe('/api/room/*', () => {
         const leaveTurnResult = await util
             .getAsJson(url + '/api/room/drop-turn/' + roomData.roomId + '/' + userData.userId);
 
-        assert(typeof leaveTurnResult.roomId === 'string');
+        assert(leaveTurnResult.roomId === roomData.roomId);
         assert(leaveTurnResult.activeUserId === null);
     });
 
@@ -95,7 +96,7 @@ describe('/api/room/*', () => {
         const getUsersResult = await util
             .getAsJson(url + '/api/room/get-users/' + roomData.roomId);
 
-        assert(typeof getUsersResult.roomId === 'string');
+        assert(getUsersResult.roomId === roomData.roomId);
         assert(getUsersResult.users[0].userId === userData.userId);
     });
 
@@ -103,7 +104,56 @@ describe('/api/room/*', () => {
         const leaveRoomResult = await util
             .getAsJson(url + '/api/room/leave/' + roomData.roomId + '/' + userData.userId);
 
-        assert(typeof leaveRoomResult.roomId === 'string');
-        assert(typeof leaveRoomResult.userId === 'string');
+        assert(leaveRoomResult.roomId === roomData.roomId);
+        assert(leaveRoomResult.userId === userData.userId);
+    });
+
+    it('room push/get states', async () => {
+        const lastStatesCount = 4;
+
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '0'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '1'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '2'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '3'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '4'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '5'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '6'});
+        await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '7'});
+
+        const pushStateResult = await util.postAsJson(url + '/api/room/push-state/' + roomData.roomId, {state: '8'});
+
+        assert(pushStateResult.roomId === roomData.roomId);
+        assert(pushStateResult.states.length === 9);
+
+        const getStatesResult = await util
+            .getAsJson(url + '/api/room/get-states/' + roomData.roomId + '/' + lastStatesCount);
+
+        assert.deepEqual(getStatesResult, {
+            roomId: roomData.roomId,
+            states: [
+                {state: '5'},
+                {state: '6'},
+                {state: '7'},
+                {state: '8'}
+            ]
+        });
+
+        const getStatesResultBig = await util
+            .getAsJson(url + '/api/room/get-states/' + roomData.roomId + '/' + 1000);
+
+        assert.deepEqual(getStatesResultBig, {
+            roomId: roomData.roomId,
+            states: [
+                {state: '0'},
+                {state: '1'},
+                {state: '2'},
+                {state: '3'},
+                {state: '4'},
+                {state: '5'},
+                {state: '6'},
+                {state: '7'},
+                {state: '8'}
+            ]
+        });
     });
 });

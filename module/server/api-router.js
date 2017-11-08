@@ -10,6 +10,8 @@ const apiRoomDropTurn = require('./api/room/drop-turn');
 const apiRoomTakeTurn = require('./api/room/take-turn');
 
 const apiRoomGetUsers = require('./api/room/get-users');
+const apiRoomPushState = require('./api/room/push-state');
+const apiGetStates = require('./api/room/get-states');
 
 module.exports.apiRouter = {
     bindRoutes: server => {
@@ -63,5 +65,15 @@ module.exports.apiRouter = {
          * get users
          */
         expressApp.get('/api/room/get-users/:roomId', apiRoomGetUsers);
+
+        /**
+         * push a state
+         */
+        expressApp.post('/api/room/push-state/:roomId', apiRoomPushState);
+
+        /**
+         * get states
+         */
+        expressApp.get('/api/room/get-states/:roomId/:count', apiGetStates);
     }
 };

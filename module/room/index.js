@@ -12,7 +12,8 @@ class Room {
         room._attr = { // eslint-disable-line no-underscore-dangle, id-match
             connections: [],
             id: roomId.toString(),
-            activeUserId: null
+            activeUserId: null,
+            states: []
         };
 
         roomMaster.push(room);
@@ -76,8 +77,19 @@ class Room {
         connections.splice(connections.indexOf(existRoomConnection), 1);
     }
 
+    pushState(state) {
+        const room = this;
+        const states = room.getStates();
+
+        states.push(state);
+    }
+
     getConnections() {
         return this.getAttr().connections;
+    }
+
+    getStates() {
+        return this.getAttr().states;
     }
 
     getId() {
