@@ -1,14 +1,14 @@
 const request = require('request');
 
-module.exports.get = url =>
+module.exports.getAsJson = url =>
     new Promise((resolve, reject) =>
-        request(url, (error, response, body) => error ? reject(error) : resolve(body, response)));
+        request(url, (error, response, body) => error ? reject(error) : resolve(JSON.parse(body))));
 
-module.exports.post = (url, params) =>
+module.exports.postAsJson = (url, params) =>
     new Promise((resolve, reject) =>
         request.post(
             {
                 url,
                 form: JSON.stringify(params)
             },
-            (error, response, body) => error ? reject(error) : resolve(body, response)));
+            (error, response, body) => error ? reject(error) : resolve(JSON.parse(body))));

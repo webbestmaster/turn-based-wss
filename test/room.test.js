@@ -21,21 +21,21 @@ describe('/api/room/create|get-ids', () => {
     afterEach(() => server.destroy());
 
     it('create a room', async () => {
-        const createRoomResult = await util.get(url + '/api/room/create');
+        const createRoomResult = await util.getAsJson(url + '/api/room/create');
 
-        assert(JSON.parse(createRoomResult).hasOwnProperty('roomId'));
+        assert(createRoomResult.hasOwnProperty('roomId'));
     });
 
     it('get room ids', async () => {
-        await util.get(url + '/api/room/create');
-        await util.get(url + '/api/room/create');
-        await util.get(url + '/api/room/create');
-        await util.get(url + '/api/room/create');
-        await util.get(url + '/api/room/create');
+        await util.getAsJson(url + '/api/room/create');
+        await util.getAsJson(url + '/api/room/create');
+        await util.getAsJson(url + '/api/room/create');
+        await util.getAsJson(url + '/api/room/create');
+        await util.getAsJson(url + '/api/room/create');
 
-        const roomsIdsData = await util.get(url + '/api/room/get-ids');
+        const roomsIdsData = await util.getAsJson(url + '/api/room/get-ids');
 
-        const roomIds = JSON.parse(roomsIdsData).roomIds;
+        const roomIds = roomsIdsData.roomIds;
 
         assert(roomIds.length === 5); // see above - exact 5 rooms
         assert(roomIds.every(roomId => typeof roomId === 'string'));
@@ -59,8 +59,7 @@ describe('/api/room/*', () => {
     after(() => server.destroy());
 
     it('create a room', async () => {
-        const createRoomResultRaw = await util.get(url + '/api/room/create');
-        const createRoomResult = JSON.parse(createRoomResultRaw);
+        const createRoomResult = await util.getAsJson(url + '/api/room/create');
 
         assert(typeof createRoomResult.roomId === 'string');
 
@@ -68,9 +67,8 @@ describe('/api/room/*', () => {
     });
 
     it('join to room', async () => {
-        const joinRoomResultRaw = await util
-            .get(url + '/api/room/join/' + roomData.roomId + '/' + userData.userId + '/some-socket-id');
-        const joinRoomResult = JSON.parse(joinRoomResultRaw);
+        const joinRoomResult = await util
+            .getAsJson(url + '/api/room/join/' + roomData.roomId + '/' + userData.userId + '/some-socket-id');
 
         assert(typeof joinRoomResult.roomId === 'string');
         assert(typeof joinRoomResult.userId === 'string');
@@ -78,28 +76,32 @@ describe('/api/room/*', () => {
     });
 
     it('take turn of room', async () => {
-        const takeTurnRoomResultRaw = await util
-            .get(url + '/api/room/take-turn/' + roomData.roomId + '/' + userData.userId);
-        const takeTurnRoomResult = JSON.parse(takeTurnRoomResultRaw);
+        const takeTurnRoomResult = await util
+            .getAsJson(url + '/api/room/take-turn/' + roomData.roomId + '/' + userData.userId);
 
         assert(typeof takeTurnRoomResult.roomId === 'string');
         assert(typeof takeTurnRoomResult.activeUserId === 'string');
     });
 
     it('drop turn of room', async () => {
-        const leaveTurnResultRaw = await util
-            .get(url + '/api/room/drop-turn/' + roomData.roomId + '/' + userData.userId);
-        const leaveTurnResult = JSON.parse(leaveTurnResultRaw);
+        const leaveTurnResult = await util
+            .getAsJson(url + '/api/room/drop-turn/' + roomData.roomId + '/' + userData.userId);
 
         assert(typeof leaveTurnResult.roomId === 'string');
         assert(leaveTurnResult.activeUserId === null);
     });
 
-    it('leave room', async () => {
-        const leaveRoomResultRaw = await util
-            .get(url + '/api/room/leave/' + roomData.roomId + '/' + userData.userId);
+    it('get users', async () => {
+        const getUsersResult = await util
+            .getAsJson(url + '/api/room/get-users/' + roomData.roomId);
 
-        const leaveRoomResult = JSON.parse(leaveRoomResultRaw);
+        assert(typeof getUsersResult.roomId === 'string');
+        assert(getUsersResult.users[0].userId === userData.userId);
+    });
+
+    it('leave room', async () => {
+        const leaveRoomResult = await util
+            .getAsJson(url + '/api/room/leave/' + roomData.roomId + '/' + userData.userId);
 
         assert(typeof leaveRoomResult.roomId === 'string');
         assert(typeof leaveRoomResult.userId === 'string');

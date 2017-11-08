@@ -1,7 +1,3 @@
-const Room = require('./../room').Room;
-
-// const UserConnection = require('./../user-connection').UserConnection;
-const roomMaster = require('./../room/master').roomMaster;
 const bodyParser = require('body-parser');
 
 const apiRoomCreate = require('./api/room/create');
@@ -12,6 +8,8 @@ const apiRoomLeave = require('./api/room/leave');
 
 const apiRoomDropTurn = require('./api/room/drop-turn');
 const apiRoomTakeTurn = require('./api/room/take-turn');
+
+const apiRoomGetUsers = require('./api/room/get-users');
 
 module.exports.apiRouter = {
     bindRoutes: server => {
@@ -60,5 +58,10 @@ module.exports.apiRouter = {
          * leave a turn
          */
         expressApp.get('/api/room/drop-turn/:roomId/:userId', apiRoomDropTurn);
+
+        /**
+         * get users
+         */
+        expressApp.get('/api/room/get-users/:roomId', apiRoomGetUsers);
     }
 };
