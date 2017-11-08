@@ -62,6 +62,20 @@ class Room {
         connections.push(newRoomConnection);
     }
 
+    leave(userId) {
+        const room = this;
+        const connections = room.getConnections();
+
+        const existRoomConnection = find(connections, connection => connection.getUserId() === userId);
+
+        if (!existRoomConnection) {
+            console.log('user with id', userId, 'is not exists in room');
+            return;
+        }
+
+        connections.splice(connections.indexOf(existRoomConnection), 1);
+    }
+
     getConnections() {
         return this.getAttr().connections;
     }

@@ -87,11 +87,21 @@ describe('/api/room/*', () => {
     });
 
     it('leave turn of room', async () => {
-        const takeLeaveRoomResultRaw = await util
+        const leaveTurnResultRaw = await util
             .get(url + '/api/room/leave-turn/' + roomData.roomId + '/' + userData.userId);
-        const takeLeaveRoomResult = JSON.parse(takeLeaveRoomResultRaw);
+        const leaveTurnResult = JSON.parse(leaveTurnResultRaw);
 
-        assert(typeof takeLeaveRoomResult.roomId === 'string');
-        assert(takeLeaveRoomResult.activeUserId === null);
+        assert(typeof leaveTurnResult.roomId === 'string');
+        assert(leaveTurnResult.activeUserId === null);
+    });
+
+    it('leave room', async () => {
+        const leaveRoomResultRaw = await util
+            .get(url + '/api/room/leave/' + roomData.roomId + '/' + userData.userId);
+
+        const leaveRoomResult = JSON.parse(leaveRoomResultRaw);
+
+        assert(typeof leaveRoomResult.roomId === 'string');
+        assert(typeof leaveRoomResult.userId === 'string');
     });
 });
