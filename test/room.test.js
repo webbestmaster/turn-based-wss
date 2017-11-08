@@ -86,9 +86,9 @@ describe('/api/room/*', () => {
         assert(typeof takeTurnRoomResult.activeUserId === 'string');
     });
 
-    it('leave turn of room', async () => {
+    it('drop turn of room', async () => {
         const leaveTurnResultRaw = await util
-            .get(url + '/api/room/leave-turn/' + roomData.roomId + '/' + userData.userId);
+            .get(url + '/api/room/drop-turn/' + roomData.roomId + '/' + userData.userId);
         const leaveTurnResult = JSON.parse(leaveTurnResultRaw);
 
         assert(typeof leaveTurnResult.roomId === 'string');
