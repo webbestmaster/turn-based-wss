@@ -23,6 +23,12 @@ class Room {
         const room = this;
         const activeUserId = room.getAttr().activeUserId;
 
+        const userConnection = room.getRoomConnectionByUserId(userId);
+
+        if (userConnection === null) {
+            return activeUserId;
+        }
+
         if (activeUserId === null) {
             room.getAttr().activeUserId = userId;
             return userId;
@@ -36,6 +42,12 @@ class Room {
         const activeUserId = room.getAttr().activeUserId;
 
         if (activeUserId !== userId) {
+            return activeUserId;
+        }
+
+        const userConnection = room.getRoomConnectionByUserId(userId);
+
+        if (userConnection === null) {
             return activeUserId;
         }
 
