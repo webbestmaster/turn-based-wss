@@ -108,4 +108,38 @@ describe('/api/room/drop-turn', () => {
 
         assert(dropTurnZeroUserResult.activeUserId === userA.userId); // has no active user
     });
+
+    it('drop turn by leave room', async () => {
+        const userA = util.createUser();
+        const userB = util.createUser();
+        const zeroUser = util.createUser();
+
+        const createRoomResult = await util.getAsJson(url + '/api/room/create');
+        const {roomId} = createRoomResult;
+
+        // join to room
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userA.socketId));
+
+        // take turn by userA
+        await util.getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
+
+        // leave userA
+        await util.getAsJson(url + path.join('/api/room/leave/', roomId, userA.userId));
+
+        // take turn as zero user
+        let takeTurnZeroUserResult = await util
+            .getAsJson(url + path.join('/api/room/take-turn/', roomId, zeroUser.userId));
+
+        assert(takeTurnZeroUserResult.activeUserId === userB.userId);
+
+        // leave userB
+        await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
+
+        // take turn as zero user
+        takeTurnZeroUserResult = await util
+            .getAsJson(url + path.join('/api/room/take-turn/', roomId, zeroUser.userId));
+
+        assert(takeTurnZeroUserResult.activeUserId === userB.userId);
+    });
 });
