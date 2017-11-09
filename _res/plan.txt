@@ -7,5 +7,7 @@
 добавить тест на дроп турн если игрок вышыл из команты
 в случаях если БЫЛ тейкнутый турн и если НЕ БЫЛ тейкнутый турн
 
-// test websocket
+how to test socket.io
 http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/
+https://alexzywiak.github.io/testing-socket-io-with-mocha-and-chai/index.html
+https://github.com/agconti/socket.io.tests
