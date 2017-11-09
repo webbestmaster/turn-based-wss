@@ -84,11 +84,18 @@ class Room {
         connections.splice(connections.indexOf(existRoomConnection), 1);
     }
 
-    pushState(state) {
+    pushState(userId, state) {
         const room = this;
         const states = room.getStates();
 
+        const activeUserId = room.getAttr().activeUserId;
+
+        if (activeUserId !== userId) {
+            return null;
+        }
+
         states.push(state);
+        return states.length;
     }
 
     getRoomConnectionByUserId(userId) {

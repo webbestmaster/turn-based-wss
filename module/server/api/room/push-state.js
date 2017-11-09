@@ -2,12 +2,12 @@ const roomMaster = require('./../../../room/master').roomMaster;
 
 module.exports = (req, res) => {
     const {params, body} = req;
-    const {roomId} = params;
+    const {roomId, userId} = params;
 
-    if (!roomId) {
+    if (!roomId || !userId) {
         res.json({
             error: {
-                message: 'Can not join to room by url: /api/room/join/' + roomId
+                message: 'Can not join to room by url: /api/room/join/' + roomId + '/' + userId
             }
         });
         return;
@@ -24,7 +24,15 @@ module.exports = (req, res) => {
         return;
     }
 
-    room.pushState(body);
+    const pushStateResult = room.pushState(userId, body);
+
+    if (pushStateResult === null) {
+        res.json({
+            roomId,
+            states: null
+        });
+        return;
+    }
 
     res.json({
         roomId,

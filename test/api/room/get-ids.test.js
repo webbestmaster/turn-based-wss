@@ -10,7 +10,7 @@ const serverOptions = {
 
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/create', () => {
+describe('/api/room/get-ids', () => {
     let server = null;
 
     beforeEach(() => {

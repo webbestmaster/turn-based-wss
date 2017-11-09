@@ -69,7 +69,7 @@ module.exports.apiRouter = {
         /**
          * push a state
          */
-        expressApp.post('/api/room/push-state/:roomId', apiRoomPushState);
+        expressApp.post('/api/room/push-state/:roomId/:userId', apiRoomPushState);
 
         /**
          * get states
