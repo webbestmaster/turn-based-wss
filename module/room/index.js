@@ -45,12 +45,6 @@ class Room {
             return activeUserId;
         }
 
-        const userConnection = room.getRoomConnectionByUserId(userId);
-
-        if (userConnection === null) {
-            return activeUserId;
-        }
-
         const nextRoomConnection = room.getNextRoomConnectionByUserId(userId);
 
         const nextActiveUserId = nextRoomConnection.getUserId();

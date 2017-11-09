@@ -80,4 +80,32 @@ describe('/api/room/drop-turn', () => {
         dropTurnResult = await util.getAsJson(url + path.join('/api/room/drop-turn/', roomId, userA.userId));
         assert(dropTurnResult.activeUserId === userB.userId);
     });
+
+    it('drop turn by non exists player', async () => {
+        const userA = util.createUser();
+        const userB = util.createUser();
+        const zeroUser = util.createUser();
+
+        const createRoomResult = await util.getAsJson(url + '/api/room/create');
+        const {roomId} = createRoomResult;
+
+        // join to room
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userA.socketId));
+
+        // drop turn by zero user
+        let dropTurnZeroUserResult = await util
+            .getAsJson(url + path.join('/api/room/drop-turn/', roomId, zeroUser.userId));
+
+        assert(dropTurnZeroUserResult.activeUserId === null); // has no active user
+
+        // take turn by userA
+        await util.getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
+
+        // drop turn by zero user again
+        dropTurnZeroUserResult = await util
+            .getAsJson(url + path.join('/api/room/drop-turn/', roomId, zeroUser.userId));
+
+        assert(dropTurnZeroUserResult.activeUserId === userA.userId); // has no active user
+    });
 });
