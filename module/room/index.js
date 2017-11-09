@@ -11,7 +11,7 @@ class Room {
 
         room._attr = { // eslint-disable-line no-underscore-dangle, id-match
             connections: [],
-            id: roomId.toString(),
+            id: 'room-id-' + roomId,
             activeUserId: null,
             states: []
         };
@@ -31,16 +31,21 @@ class Room {
         return activeUserId;
     }
 
-    takeAwayTurn(userId) {
+    dropTurn(userId) {
         const room = this;
         const activeUserId = room.getAttr().activeUserId;
 
-        if (activeUserId === userId) {
-            room.getAttr().activeUserId = null;
-            return null;
+        if (activeUserId !== userId) {
+            return activeUserId;
         }
 
-        return activeUserId;
+        const nextRoomConnection = room.getNextRoomConnectionByUserId(userId);
+
+        const nextActiveUserId = nextRoomConnection.getUserId();
+
+        room.getAttr().activeUserId = nextActiveUserId;
+
+        return nextActiveUserId;
     }
 
     join(roomConnectionOptions) {
@@ -74,6 +79,8 @@ class Room {
             return;
         }
 
+        room.dropTurn(userId);
+
         connections.splice(connections.indexOf(existRoomConnection), 1);
     }
 
@@ -82,6 +89,31 @@ class Room {
         const states = room.getStates();
 
         states.push(state);
+    }
+
+    getRoomConnectionByUserId(userId) {
+        const room = this;
+        const connections = room.getConnections();
+
+        return find(connections, connection => connection.getUserId() === userId) || null;
+    }
+
+    getNextRoomConnectionByUserId(userId) {
+        const room = this;
+        const roomConnection = room.getRoomConnectionByUserId(userId);
+
+        if (roomConnection === null) {
+            return null;
+        }
+
+        const connections = room.getConnections();
+        const nextRoomConnectionOrder = connections.indexOf(roomConnection) + 1;
+
+        if (nextRoomConnectionOrder === connections.length) {
+            return connections[0];
+        }
+
+        return connections[nextRoomConnectionOrder];
     }
 
     getConnections() {

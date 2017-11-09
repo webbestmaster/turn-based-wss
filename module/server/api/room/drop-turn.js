@@ -24,7 +24,7 @@ module.exports = (req, res) => {
         return;
     }
 
-    const activeUserId = room.takeAwayTurn(userId);
+    const activeUserId = room.dropTurn(userId);
 
     res.json({
         roomId,

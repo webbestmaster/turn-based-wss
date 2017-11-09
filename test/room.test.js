@@ -89,7 +89,7 @@ describe('/api/room/*', () => {
             .getAsJson(url + '/api/room/drop-turn/' + roomData.roomId + '/' + userData.userId);
 
         assert(leaveTurnResult.roomId === roomData.roomId);
-        assert(leaveTurnResult.activeUserId === null);
+        assert(leaveTurnResult.activeUserId === userData.userId);
     });
 
     it('get users', async () => {

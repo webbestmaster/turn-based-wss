@@ -12,3 +12,8 @@ module.exports.postAsJson = (url, params) =>
                 form: params
             },
             (error, response, body) => error ? reject(error) : resolve(JSON.parse(body))));
+
+module.exports.createUser = () => ({
+    userId: 'user-id-' + String(Math.random()).slice(2),
+    socketId: 'socket-id-' + String(Math.random()).slice(2)
+});

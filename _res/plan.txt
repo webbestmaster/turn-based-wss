@@ -1,2 +1,4 @@
+на leave turn - сначала делать null active player, а потом передовать ход следующему игроку
+
 // test websocket
 http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/
