@@ -1,8 +1,14 @@
 /* global describe, it, before, after, beforeEach, afterEach */
-const assert = require('chai').assert;
+const chai = require('chai');
+
+chai.use(require('chai-json-schema'));
+const assert = chai.assert;
+
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const path = require('path');
+
+const pushStateResultSchema = util.pushStateResultSchema;
 
 const serverOptions = {
     port: 3080,
@@ -49,7 +55,8 @@ describe('/api/room/push-state', () => {
         let getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1));
 
-        assert.deepEqual(getStatesResult.states[0], {state: 'state-1'});
+        assert(getStatesResult.states[0].state === 'state-1');
+        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
 
         // push state by userB without turn
         pushStateResult = await util
@@ -60,7 +67,8 @@ describe('/api/room/push-state', () => {
         getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1));
 
-        assert.deepEqual(getStatesResult.states[0], {state: 'state-1'});
+        assert(getStatesResult.states[0].state === 'state-1');
+        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
 
         // leave turn by userA
         await util.getAsJson(url + path.join('/api/room/drop-turn/', roomId, userA.userId));
@@ -73,17 +81,15 @@ describe('/api/room/push-state', () => {
         getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 2));
 
-        assert.deepEqual(getStatesResult.states, [
-            {state: 'state-1'},
-            {state: 'state-2'}
-        ]);
+        assert(getStatesResult.states[0].state, 'state-1');
+        assert(getStatesResult.states[1].state, 'state-2');
+        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
 
         getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1000));
 
-        assert.deepEqual(getStatesResult.states, [
-            {state: 'state-1'},
-            {state: 'state-2'}
-        ]);
+        assert(getStatesResult.states[0].state, 'state-1');
+        assert(getStatesResult.states[1].state, 'state-2');
+        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
     });
 });

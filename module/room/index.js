@@ -1,6 +1,7 @@
 const roomMaster = require('./master').roomMaster;
 const RoomConnection = require('./room-connection').RoomConnection;
 const find = require('lodash/find');
+const sha1 = require('sha1');
 let roomId = 0;
 
 class Room {
@@ -99,6 +100,17 @@ class Room {
         if (activeUserId !== userId) {
             return null;
         }
+
+        const order = states.length;
+        const timestamp = Date.now();
+
+        Object.assign(state, {
+            meta: {
+                order,
+                timestamp,
+                hash: sha1(order + '/' + timestamp)
+            }
+        });
 
         states.push(state);
         return states.length;
