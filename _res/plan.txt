@@ -1,5 +1,5 @@
-добавить тест join если пользовательно джойниться дважды\трижды
-на leave turn - сначала делать null active player, а потом передовать ход следующему игроку
+добавить тест на дроп турн если игрок вышыл из команты
+в случаях если БЫЛ тейкнутый турн и если НЕ БЫЛ тейкнутый турн
 
 // test websocket
 http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/
