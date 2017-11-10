@@ -25,11 +25,8 @@ module.exports = (req, res) => {
         return;
     }
 
-    const states = room.getStates();
-    const statesLength = states.length;
-
     res.json({
         roomId,
-        states: states.slice(statesLength - count, statesLength)
+        settings: room.getSettings()
     });
 };

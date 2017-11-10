@@ -159,7 +159,7 @@ class Room {
     }
 
     getSetting(key) {
-        return this.getAttr().settings[key] || null;
+        return this.getAttr().settings[key];
     }
 
     setSettings(settings) {
@@ -170,10 +170,12 @@ class Room {
         return room;
     }
 
-    setSetting(key, value) {
+    setSetting(addedSettings) {
         const room = this;
 
-        room.getAttr().settings[key] = value;
+        const settings = room.getSettings();
+
+        Object.assign(settings, addedSettings);
 
         return room;
     }

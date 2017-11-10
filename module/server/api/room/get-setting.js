@@ -2,7 +2,7 @@ const roomMaster = require('./../../../room/master').roomMaster;
 
 module.exports = (req, res) => {
     const {params} = req;
-    const {roomId} = params;
+    const {roomId, key} = params;
 
     if (!roomId) {
         res.json({
@@ -25,11 +25,8 @@ module.exports = (req, res) => {
         return;
     }
 
-    const states = room.getStates();
-    const statesLength = states.length;
-
     res.json({
         roomId,
-        states: states.slice(statesLength - count, statesLength)
+        value: room.getSetting(key)
     });
 };

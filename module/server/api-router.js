@@ -97,7 +97,7 @@ module.exports.apiRouter = {
         expressApp.post('/api/room/set-all-settings/:roomId', apiSetAllSettings);
 
         /**
-         * set setting by key: value
+         * set setting by {key: value}
          */
         expressApp.post('/api/room/set-setting/:roomId', apiSetSetting);
     }
