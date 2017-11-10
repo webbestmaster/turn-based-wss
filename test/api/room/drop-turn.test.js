@@ -106,7 +106,7 @@ describe('/api/room/drop-turn', () => {
         dropTurnZeroUserResult = await util
             .getAsJson(url + path.join('/api/room/drop-turn/', roomId, zeroUser.userId));
 
-        assert(dropTurnZeroUserResult.activeUserId === userA.userId); // has no active user
+        assert(dropTurnZeroUserResult.activeUserId === userA.userId); // still userA is active user
     });
 
     it('drop turn by leave room', async () => {

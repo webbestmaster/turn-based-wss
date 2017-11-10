@@ -1,11 +1,6 @@
 сделать гет стейт бай хешь - возвращать всё что после хеша, если такого хеша нет - возвращать null
 сделать main state - тоже самое что и просто стейт только только могут пушить все кто в комнате, никакого force
 
-проветить дроп турн на игрока которого НЕ было в комнате
-
-добавить тест на дроп турн если игрок вышыл из команты
-в случаях если БЫЛ тейкнутый турн и если НЕ БЫЛ тейкнутый турн
-
 how to test socket.io
 http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/
 https://alexzywiak.github.io/testing-socket-io-with-mocha-and-chai/index.html
