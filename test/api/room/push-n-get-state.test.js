@@ -51,6 +51,7 @@ describe('/api/room/push-state', () => {
         pushStateResult = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-1'});
         assert(pushStateResult.states.length === 1);
+        assert.jsonSchema([pushStateResult.states.last], pushStateResultSchema);
 
         let getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1));
@@ -73,7 +74,7 @@ describe('/api/room/push-state', () => {
         // leave turn by userA
         await util.getAsJson(url + path.join('/api/room/drop-turn/', roomId, userA.userId));
 
-        // push state by userB without turn
+        // push state by userB with turn
         pushStateResult = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userB.userId), {state: 'state-2'});
         assert(pushStateResult.states.length === 2);

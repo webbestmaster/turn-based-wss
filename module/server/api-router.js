@@ -18,6 +18,9 @@ const apiGetSetting = require('./api/room/get-setting');
 const apiSetAllSettings = require('./api/room/set-all-settings');
 const apiSetSetting = require('./api/room/set-setting');
 
+const apiGetAllStates = require('./api/room/get-all-states');
+const apiGetStatesFromHash = require('./api/room/get-states-from-hash');
+
 module.exports.apiRouter = {
     bindRoutes: server => {
         const expressApp = server.getExpressApp();
@@ -80,6 +83,16 @@ module.exports.apiRouter = {
          * get states
          */
         expressApp.get('/api/room/get-states/:roomId/:count', apiGetStates);
+
+        /**
+         * get all states
+         */
+        expressApp.get('/api/room/get-all-states/:roomId', apiGetAllStates);
+
+        /**
+         * get states from hash
+         */
+        expressApp.get('/api/room/get-states-from-hash/:roomId/:hash', apiGetStatesFromHash);
 
         /**
          * get all settings

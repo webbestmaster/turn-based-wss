@@ -24,9 +24,9 @@ module.exports = (req, res) => {
         return;
     }
 
-    const pushStateResult = room.pushState(userId, body);
+    const lastState = room.pushState(userId, body);
 
-    if (pushStateResult === null) {
+    if (lastState === null) {
         res.json({
             roomId,
             states: null
@@ -37,6 +37,7 @@ module.exports = (req, res) => {
     res.json({
         roomId,
         states: {
+            last: lastState,
             length: room.getStates().length
         }
     });

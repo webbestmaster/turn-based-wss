@@ -114,7 +114,7 @@ class Room {
         });
 
         states.push(state);
-        return states.length;
+        return state;
     }
 
     getRoomConnectionByUserId(userId) {
@@ -140,6 +140,29 @@ class Room {
         }
 
         return connections[nextRoomConnectionOrder];
+    }
+
+    getStateByHash(hash) {
+        const room = this;
+        const states = room.getStates();
+
+        return find(states, state => state.meta.hash === hash) || null;
+    }
+
+    getStatesFromHash(hash) {
+        const room = this;
+
+        const startState = room.getStateByHash(hash);
+
+        if (startState === null) {
+            return null;
+        }
+
+        const states = room.getStates();
+
+        const startIndex = states.indexOf(startState);
+
+        return states.slice(startIndex + 1);
     }
 
     getConnections() {
