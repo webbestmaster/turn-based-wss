@@ -13,6 +13,11 @@ const apiRoomGetUsers = require('./api/room/get-users');
 const apiRoomPushState = require('./api/room/push-state');
 const apiGetStates = require('./api/room/get-states');
 
+const apiGetAllSettings = require('./api/room/get-all-settings');
+const apiGetSetting = require('./api/room/get-setting');
+const apiSetAllSettings = require('./api/room/set-all-settings');
+const apiSetSetting = require('./api/room/set-setting');
+
 module.exports.apiRouter = {
     bindRoutes: server => {
         const expressApp = server.getExpressApp();
@@ -75,5 +80,25 @@ module.exports.apiRouter = {
          * get states
          */
         expressApp.get('/api/room/get-states/:roomId/:count', apiGetStates);
+
+        /**
+         * get all settings
+         */
+        expressApp.get('/api/room/get-all-settings/:roomId', apiGetAllSettings);
+
+        /**
+         * get setting by key
+         */
+        expressApp.get('/api/room/get-setting/:roomId/:key', apiGetSetting);
+
+        /**
+         * set all settings
+         */
+        expressApp.post('/api/room/set-all-settings/:roomId', apiSetAllSettings);
+
+        /**
+         * set setting by key: value
+         */
+        expressApp.post('/api/room/set-setting/:roomId', apiSetSetting);
     }
 };

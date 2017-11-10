@@ -14,7 +14,8 @@ class Room {
             connections: [],
             id: 'room-id-' + roomId,
             activeUserId: null,
-            states: []
+            states: [],
+            settings: {}
         };
 
         roomMaster.push(room);
@@ -151,6 +152,30 @@ class Room {
 
     getId() {
         return this.getAttr().id;
+    }
+
+    getSettings() {
+        return this.getAttr().settings;
+    }
+
+    getSetting(key) {
+        return this.getAttr().settings[key] || null;
+    }
+
+    setSettings(settings) {
+        const room = this;
+
+        room.getAttr().settings = settings;
+
+        return room;
+    }
+
+    setSetting(key, value) {
+        const room = this;
+
+        room.getAttr().settings[key] = value;
+
+        return room;
     }
 
     getAttr() {
