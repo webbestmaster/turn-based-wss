@@ -57,11 +57,13 @@ describe('/api/room/push-state', () => {
             .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
+        assert(pushStateResult.roomId === roomId);
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
 
         // push state by userB without turn
         pushStateResult = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userB.userId), {state: 'state-2'});
+        assert(pushStateResult.roomId === roomId);
         assert(pushStateResult.states === null);
 
         // check state did not push

@@ -97,9 +97,35 @@ Response:
                 @property: socketId
                 @type: string
 
+####Push state.
+> POST /api/room/push-state/:roomId/:userId
+
+Request body:
+@type: object
+    @property: *
+    @type: string
+
+Response (success): 
+@type: json
+    @property: roomId
+    @type: string
+    @property: states
+    @type: object
+        @property: last
+        @type: object<you puched state>
+        @property: length
+        @type: number
+
+Response (fail): 
+@type: json
+    @property: roomId
+    @type: string
+    @property: states
+    @type: object
+    @value: null
+
 
 // TODO: document IT!
-/api/room/push-state/:roomId/:userId
 /api/room/get-last-states/:roomId/:count
 /api/room/get-all-states/:roomId
 /api/room/get-states-from-hash/:roomId/:hash
