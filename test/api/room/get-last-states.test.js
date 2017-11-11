@@ -17,7 +17,7 @@ const serverOptions = {
 
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/get-states', () => {
+describe('/api/room/get-last-states', () => {
     let server = null;
 
     beforeEach(() => {
@@ -27,7 +27,7 @@ describe('/api/room/get-states', () => {
 
     afterEach(() => server.destroy());
 
-    it('get states', async () => {
+    it('get last states', async () => {
         const userA = util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
@@ -46,7 +46,7 @@ describe('/api/room/get-states', () => {
         assert(pushStateResult.states.length === 1);
 
         let getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
@@ -57,14 +57,14 @@ describe('/api/room/get-states', () => {
         assert(pushStateResult.states.length === 2);
 
         getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 2));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 2));
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
 
         getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1000));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1000));
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');

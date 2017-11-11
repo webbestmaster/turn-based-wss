@@ -1,28 +1,22 @@
 const roomMaster = require('./../../../room/master').roomMaster;
+const error = require('./../error.json');
 
 module.exports = (req, res) => {
     const {params} = req;
     const {roomId, userId, socketId} = params;
-
-    if (!roomId || !userId || !socketId) {
-        res.json({
-            error: {
-                message: 'Can not join to room by url: /api/room/join/' + roomId + '/' + userId + '/' + socketId
-            }
-        });
-        return;
-    }
 
     const room = roomMaster.getRoomById(roomId);
 
     if (!room) {
         res.json({
             error: {
-                message: 'Room not found, room id: ' + roomId
+                id: error.ROOM_NOT_FOUND.id,
+                message: error.ROOM_NOT_FOUND.message.replace('{{roomId}}', roomId)
             }
         });
         return;
     }
+
 
     room.join({
         userId,

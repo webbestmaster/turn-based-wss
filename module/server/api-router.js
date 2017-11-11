@@ -11,7 +11,7 @@ const apiRoomTakeTurn = require('./api/room/take-turn');
 
 const apiRoomGetUsers = require('./api/room/get-users');
 const apiRoomPushState = require('./api/room/push-state');
-const apiGetStates = require('./api/room/get-states');
+const apiGetLastStates = require('./api/room/get-last-states');
 
 const apiGetAllSettings = require('./api/room/get-all-settings');
 const apiGetSetting = require('./api/room/get-setting');
@@ -82,7 +82,7 @@ module.exports.apiRouter = {
         /**
          * get states
          */
-        expressApp.get('/api/room/get-states/:roomId/:count', apiGetStates);
+        expressApp.get('/api/room/get-last-states/:roomId/:count', apiGetLastStates);
 
         /**
          * get all states

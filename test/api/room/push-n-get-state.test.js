@@ -54,7 +54,7 @@ describe('/api/room/push-state', () => {
         assert.jsonSchema([pushStateResult.states.last], pushStateResultSchema);
 
         let getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
@@ -66,7 +66,7 @@ describe('/api/room/push-state', () => {
 
         // check state did not push
         getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
@@ -80,17 +80,18 @@ describe('/api/room/push-state', () => {
         assert(pushStateResult.states.length === 2);
 
         getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 2));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 2));
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
 
         getStatesResult = await util
-            .getAsJson(url + path.join('/api/room/get-states/', roomId, '/' + 1000));
+            .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1000));
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
+        assert(getStatesResult.states.length === 2);
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
     });
 });

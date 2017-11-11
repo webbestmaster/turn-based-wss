@@ -3,7 +3,7 @@ const error = require('./../error.json');
 
 module.exports = (req, res) => {
     const {params} = req;
-    const {roomId, userId} = params;
+    const {roomId, count} = params;
 
     const room = roomMaster.getRoomById(roomId);
 
@@ -18,10 +18,10 @@ module.exports = (req, res) => {
     }
 
 
-    const activeUserId = room.giveTurn(userId);
+    const lastStates = room.getLastStates(count);
 
     res.json({
         roomId,
-        activeUserId
+        states: lastStates
     });
 };

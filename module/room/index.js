@@ -173,6 +173,14 @@ class Room {
         return this.getAttr().states;
     }
 
+    getLastStates(count) {
+        const room = this;
+        const states = room.getStates();
+        const statesLength = states.length;
+
+        return states.slice(statesLength - count, statesLength);
+    }
+
     getId() {
         return this.getAttr().id;
     }
