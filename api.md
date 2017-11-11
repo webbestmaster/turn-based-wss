@@ -173,7 +173,23 @@ Response:
     @type: <value of setting>
 
 
-// TODO: document IT!
-/api/room/set-all-settings/:roomId
-/api/room/set-setting/:roomId
+####Set all settings
+> GET /api/room/set-all-settings/:roomId
 
+Request body: object<your settings>
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+
+
+####Set one setting
+> GET /api/room/set-setting/:roomId
+
+Request body: object<your setting>
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
