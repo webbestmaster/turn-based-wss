@@ -66,8 +66,20 @@ Response:
     @type: string
 
 
+####Drop the turn.
+> GET /api/room/drop-turn/:roomId/:userId
+
+Request body: empty
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+    @property: activeUserId
+    @type: string
+
+
 // TODO: document IT!
-/api/room/drop-turn/:roomId/:userId
 /api/room/get-users/:roomId
 /api/room/push-state/:roomId/:userId
 /api/room/get-last-states/:roomId/:count

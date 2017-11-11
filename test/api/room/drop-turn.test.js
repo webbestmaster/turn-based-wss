@@ -61,11 +61,13 @@ describe('/api/room/drop-turn', () => {
         // drop turn
         let dropTurnResult = await util.getAsJson(url + path.join('/api/room/drop-turn/', roomId, userA.userId));
 
+        assert(dropTurnResult.roomId === roomId);
         assert(dropTurnResult.activeUserId === null); // has no active user
 
         // take turn
         const takeTurnResult = await util.getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
 
+        assert(dropTurnResult.roomId === roomId);
         assert(takeTurnResult.activeUserId === userA.userId);
 
         // drop turn by userB
