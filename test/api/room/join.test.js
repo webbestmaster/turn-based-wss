@@ -3,6 +3,7 @@ const assert = require('chai').assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const path = require('path');
+const error = require('./../../../module/server/api/error.json');
 
 const serverOptions = {
     port: 3080,
@@ -72,5 +73,19 @@ describe('/api/room/join', () => {
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
         assert.deepEqual(getUsersResult.users, [userA, userB]);
+    });
+
+    it('join to not exists room', async () => {
+        const user = util.createUser();
+        const notExistsRoomId = String(Math.random());
+
+        await util.getAsJson(url + '/api/room/create');
+
+        // join to not exists room
+        const joinUserResult = await util
+            .getAsJson(url + path.join('/api/room/join/', notExistsRoomId, user.userId, user.socketId));
+
+        assert(joinUserResult.error.id === error.ROOM_NOT_FOUND.id);
+        assert(joinUserResult.error.message === error.ROOM_NOT_FOUND.message.replace('{{roomId}}', notExistsRoomId));
     });
 });
