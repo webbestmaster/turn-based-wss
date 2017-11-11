@@ -61,7 +61,7 @@ module.exports.apiRouter = {
         expressApp.get('/api/room/take-turn/:roomId/:userId', apiRoomTakeTurn);
 
         /**
-         * leave a turn
+         * drop a turn
          */
         expressApp.get('/api/room/drop-turn/:roomId/:userId', apiRoomDropTurn);
 

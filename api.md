@@ -79,8 +79,26 @@ Response:
     @type: string
 
 
+####Get users.
+> GET /api/room/get-users/:roomId
+
+Request body: empty
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+    @property: users
+    @type: array
+        @items:
+            @type: object
+                @property: userId
+                @type: string
+                @property: socketId
+                @type: string
+
+
 // TODO: document IT!
-/api/room/get-users/:roomId
 /api/room/push-state/:roomId/:userId
 /api/room/get-last-states/:roomId/:count
 /api/room/get-all-states/:roomId
