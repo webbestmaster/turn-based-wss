@@ -36,16 +36,12 @@ module.exports.apiRouter = {
         expressApp.use(bodyParser.json());
 
         /**
-         * return {
-         *      roomId: {number} - room's id
-         * }
+         * create room
          */
         expressApp.get('/api/room/create', apiRoomCreate);
 
         /**
-         * return {
-         *      roomIds: {string[]} - list of room's ids, example: ['1', '2', '11']
-         * }
+         * get room ids
          */
         expressApp.get('/api/room/get-ids', apiRoomGetIds);
 
@@ -80,7 +76,7 @@ module.exports.apiRouter = {
         expressApp.post('/api/room/push-state/:roomId/:userId', apiRoomPushState);
 
         /**
-         * get states
+         * get last states
          */
         expressApp.get('/api/room/get-last-states/:roomId/:count', apiGetLastStates);
 
