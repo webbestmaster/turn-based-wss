@@ -97,6 +97,7 @@ Response:
                 @property: socketId
                 @type: string
 
+
 ####Push state.
 > POST /api/room/push-state/:roomId/:userId
 
@@ -112,7 +113,7 @@ Response (success):
     @property: states
     @type: object
         @property: last
-        @type: object<you puched state>
+        @type: object<your pushed state>
         @property: length
         @type: number
 
@@ -125,10 +126,30 @@ Response (fail):
     @value: null
 
 
+####Get last states
+> GET /api/room/get-last-states/:roomId/:count
+
+####Get states from hash
+> GET /api/room/get-states-from-hash/:roomId/:hash
+
+####Get all states
+> GET /api/room/get-all-states/:roomId
+
+Request body: empty
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+    @property: states
+    @type: array
+        @items:
+            @type: object<pushed states>
+
+
+
+
 // TODO: document IT!
-/api/room/get-last-states/:roomId/:count
-/api/room/get-all-states/:roomId
-/api/room/get-states-from-hash/:roomId/:hash
 /api/room/get-all-settings/:roomId
 /api/room/get-setting/:roomId/:key
 /api/room/set-all-settings/:roomId

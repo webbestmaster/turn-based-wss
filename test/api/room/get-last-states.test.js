@@ -27,7 +27,7 @@ describe('/api/room/get-last-states', () => {
 
     afterEach(() => server.destroy());
 
-    it('get last states', async () => {
+    it('get last states', async () => { // eslint-disable-line max-statements
         const userA = util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
@@ -43,6 +43,7 @@ describe('/api/room/get-last-states', () => {
         let pushStateResult = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-1'});
 
+        assert(pushStateResult.roomId === roomId);
         assert(pushStateResult.states.length === 1);
 
         let getStatesResult = await util

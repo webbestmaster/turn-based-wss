@@ -81,14 +81,14 @@ module.exports.apiRouter = {
         expressApp.get('/api/room/get-last-states/:roomId/:count', apiGetLastStates);
 
         /**
-         * get all states
-         */
-        expressApp.get('/api/room/get-all-states/:roomId', apiGetAllStates);
-
-        /**
          * get states from hash
          */
         expressApp.get('/api/room/get-states-from-hash/:roomId/:hash', apiGetStatesFromHash);
+
+        /**
+         * get all states
+         */
+        expressApp.get('/api/room/get-all-states/:roomId', apiGetAllStates);
 
         /**
          * get all settings
