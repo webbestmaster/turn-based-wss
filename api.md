@@ -53,9 +53,20 @@ Response:
     @type: string
 
 
+####Take a turn.
+> GET /api/room/take-turn/:roomId/:userId
+
+Request body: empty
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+    @property: activeUserId
+    @type: string
+
 
 // TODO: document IT!
-/api/room/take-turn/:roomId/:userId
 /api/room/drop-turn/:roomId/:userId
 /api/room/get-users/:roomId
 /api/room/push-state/:roomId/:userId
