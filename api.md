@@ -147,11 +147,33 @@ Response:
             @type: object<pushed states>
 
 
+####Get all settings
+> GET /api/room/get-all-settings/:roomId
+
+Request body: empty
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+    @property: settings
+    @type: object<your settings>
+
+
+####Get setting
+> GET /api/room/get-setting/:roomId/:key
+
+Request body: empty
+
+Response: 
+@type: json
+    @property: roomId
+    @type: string
+    @property: value
+    @type: <value of setting>
 
 
 // TODO: document IT!
-/api/room/get-all-settings/:roomId
-/api/room/get-setting/:roomId/:key
 /api/room/set-all-settings/:roomId
 /api/room/set-setting/:roomId
 
