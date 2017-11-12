@@ -1,4 +1,5 @@
 /* global __dirname */
+const ip = require('ip'); // eslint-disable-line id-length
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -38,8 +39,6 @@ class Server {
         });
 
         server._attr = attr; // eslint-disable-line no-underscore-dangle, id-match
-
-        console.log('TBW was created.');
     }
 
     run() {
@@ -56,7 +55,7 @@ class Server {
             apiRouter.bindRoutes(server);
 
             httpServer.listen(options.port, () => {
-                console.log('listening on *:' + options.port);
+                console.log('TBW listening on ' + ip.address() + ':' + options.port);
                 resolve();
             });
 
@@ -86,13 +85,18 @@ class Server {
         const expressApp = server.getExpressApp();
         const httpServer = server.getHttpServer();
         const socketIoServer = server.getSocketIoServer();
+        const port = server.getOptions().port;
 
         roomMaster.destroy();
 
-        return Promise.all([
-            new Promise((resolve, reject) => socketIoServer.close(resolve)),
-            new Promise((resolve, reject) => httpServer.close(resolve))
-        ]);
+        return Promise
+            .all([
+                new Promise((resolve, reject) => socketIoServer.close(resolve)),
+                new Promise((resolve, reject) => httpServer.close(resolve))
+            ])
+            .then(() => {
+                console.log('TBW stop listen ' + ip.address() + ':' + port);
+            });
     }
 
     getAttr() {
