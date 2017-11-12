@@ -25,13 +25,13 @@ describe('/api/room/get-last-states', () => {
     afterEach(() => server.destroy());
 
     it('get last states', async () => { // eslint-disable-line max-statements
-        const userA = util.createUser();
+        const userA = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
 
         // take turn
         await util.getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
@@ -67,5 +67,7 @@ describe('/api/room/get-last-states', () => {
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+
+        userA.socket.disconnect();
     });
 });

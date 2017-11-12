@@ -19,17 +19,17 @@ describe('/api/room/leave', () => {
     afterEach(() => server.destroy());
 
     it('leave', async () => { // eslint-disable-line max-statements
-        const userA = util.createUser();
-        const userB = util.createUser();
+        const userA = await util.createUser();
+        const userB = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room as userA
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
 
         // join to room as userB
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socket.id));
 
         // leave from room as userA
         const leaveUserAResult = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userA.userId));
@@ -40,7 +40,7 @@ describe('/api/room/leave', () => {
         let getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
-        assert.deepEqual(getUsersResult.users, [userB]);
+        assert.deepEqual(getUsersResult.users, [{userId: userB.userId, socketId: userB.socket.id}]);
 
         // leave from room as userB
         const leaveUserBResult = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
@@ -63,5 +63,8 @@ describe('/api/room/leave', () => {
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
         assert.deepEqual(getUsersResult.users, []);
+
+        userA.socket.disconnect();
+        userB.socket.disconnect();
     });
 });

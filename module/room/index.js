@@ -5,7 +5,7 @@ const sha1 = require('sha1');
 let roomId = 0;
 
 class Room {
-    constructor() {
+    constructor(options) {
         const room = this;
 
         roomId += 1;
@@ -15,7 +15,8 @@ class Room {
             id: 'room-id-' + roomId,
             activeUserId: null,
             states: [],
-            settings: {}
+            settings: {},
+            server: options.server
         };
 
         roomMaster.push(room);
@@ -114,7 +115,27 @@ class Room {
         });
 
         states.push(state);
+
+        room.emit({
+            roomId: room.getId(),
+            states: {
+                last: state,
+                length: room.getStates().length
+            }
+        });
+
         return state;
+    }
+
+    emit(data) {
+        const room = this;
+        const connections = room.getConnections();
+        const server = room.getServer();
+        const socketIoServer = server.getSocketIoServer();
+
+        connections.forEach(connection => {
+            socketIoServer.to(connection.getAttr().socketId).emit('message', data);
+        });
     }
 
     getRoomConnectionByUserId(userId) {
@@ -209,6 +230,10 @@ class Room {
         Object.assign(settings, addedSettings);
 
         return room;
+    }
+
+    getServer() {
+        return this.getAttr().server;
     }
 
     getAttr() {

@@ -1,4 +1,5 @@
 const request = require('request');
+const socketIoClient = require('socket.io-client');
 
 module.exports.getAsJson = url =>
     new Promise((resolve, reject) =>
@@ -13,10 +14,29 @@ module.exports.postAsJson = (url, params) =>
             },
             (error, response, body) => error ? reject(error) : resolve(JSON.parse(body))));
 
-module.exports.createUser = () => ({
-    userId: 'user-id-' + String(Math.random()).slice(2),
-    socketId: 'socket-id-' + String(Math.random()).slice(2)
-});
+module.exports.createUser = () => {
+    const clientData = {
+        userId: 'user-id-' + String(Math.random()).slice(2),
+        socket: null,
+        messages: []
+    };
+
+    return new Promise((resolve, reject) => {
+        const options = {
+            transports: ['websocket'],
+            'force new connection': true
+        };
+
+        const socket = socketIoClient.connect('http://localhost:' + getServerOptions().port, options);
+
+        socket.on('message', message => clientData.messages.push(message));
+
+        socket.on('connect', () => {
+            Object.assign(clientData, {socket});
+            resolve(clientData);
+        });
+    });
+};
 
 module.exports.pushStateResultSchema = {
     title: 'push state schema v1',
@@ -48,7 +68,11 @@ module.exports.pushStateResultSchema = {
     }
 };
 
-module.exports.getServerOptions = () => ({
-    port: 3080,
-    'static': 'static' // optional parameter here
-});
+function getServerOptions() {
+    return {
+        port: 3080,
+        'static': 'static' // optional parameter here
+    };
+}
+
+module.exports.getServerOptions = getServerOptions;

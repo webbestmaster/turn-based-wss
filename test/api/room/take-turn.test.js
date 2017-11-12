@@ -19,14 +19,14 @@ describe('/api/room/take-turn', () => {
     afterEach(() => server.destroy());
 
     it('take turn by non exists player', async () => { // eslint-disable-line max-statements
-        const user = util.createUser();
-        const userNotExists = util.createUser();
+        const user = await util.createUser();
+        const userNotExists = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, user.userId, user.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, user.userId, user.socket.id));
 
         // take turn
         let takeTurnResult = await util
@@ -41,16 +41,19 @@ describe('/api/room/take-turn', () => {
 
         assert(takeTurnResult.roomId === roomId);
         assert(takeTurnResult.activeUserId === null);
+
+        user.socket.disconnect();
+        userNotExists.socket.disconnect();
     });
 
     it('take turn SINGLE player', async () => { // eslint-disable-line max-statements
-        const user = util.createUser();
+        const user = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, user.userId, user.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, user.userId, user.socket.id));
 
         // take turn
         let takeTurnResult = await util
@@ -65,18 +68,20 @@ describe('/api/room/take-turn', () => {
 
         assert(takeTurnResult.roomId === roomId);
         assert(takeTurnResult.activeUserId === user.userId);
+
+        user.socket.disconnect();
     });
 
     it('take turn TWO players', async () => { // eslint-disable-line max-statements
-        const userA = util.createUser();
-        const userB = util.createUser();
+        const userA = await util.createUser();
+        const userB = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room as userA
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socket.id));
 
         // take turn as userA
         const takeTurnUserAResult = await util
@@ -99,5 +104,8 @@ describe('/api/room/take-turn', () => {
         // turn should be belongs to userA
         assert(takeTurnUserBResult.roomId === roomId);
         assert(takeTurnUserBResult.activeUserId === userA.userId);
+
+        userA.socket.disconnect();
+        userB.socket.disconnect();
     });
 });

@@ -38,7 +38,7 @@ module.exports.apiRouter = {
         /**
          * create room
          */
-        expressApp.get('/api/room/create', apiRoomCreate);
+        expressApp.get('/api/room/create', (req, res) => apiRoomCreate(req, res, server));
 
         /**
          * get room ids

@@ -25,13 +25,13 @@ describe('/api/room/get-states-from-hash', () => {
     afterEach(() => server.destroy());
 
     it('get states from hash', async () => { // eslint-disable-line max-statements
-        const userA = util.createUser();
+        const userA = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
 
         // take turn
         await util.getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
@@ -95,5 +95,7 @@ describe('/api/room/get-states-from-hash', () => {
         assert(getAllStatesResult.roomId, roomId);
         assert(getAllStatesResult.states.length === 4);
         assert.jsonSchema(getAllStatesResult.states, pushStateResultSchema);
+
+        userA.socket.disconnect();
     });
 });

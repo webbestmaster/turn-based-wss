@@ -48,8 +48,6 @@ class Server {
             const socketIoServer = server.getSocketIoServer();
             const options = server.getOptions();
 
-            // console.log('TBW has bean run.');
-
             server.getExpressApp().use(express.static(server.getOptions().static));
 
             apiRouter.bindRoutes(server);
@@ -59,23 +57,13 @@ class Server {
                 resolve();
             });
 
+            // just debug info
             socketIoServer.on('connection', socket => {
-                socket.emit('setup-socket-id', {
-                    socketId: socket.id
-                });
-
                 console.log(`Client connected [id=${socket.id}]`);
 
                 socket.on('disconnect', () => {
-                    console.log('user disconnected');
+                    console.log(`Client disconnected [id=${socket.id}]`);
                 });
-
-                socket.on('chat message', msg => {
-                    // socket.broadcast.emit('chat message', msg); // for every one, except me
-                    socketIoServer.emit('chat message', msg); // every one and me too
-                });
-
-                console.log('a user connected');
             });
         });
     }

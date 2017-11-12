@@ -25,15 +25,15 @@ describe('/api/room/push-state', () => {
     afterEach(() => server.destroy());
 
     it('push state', async () => { // eslint-disable-line max-statements
-        const userA = util.createUser();
-        const userB = util.createUser();
+        const userA = await util.createUser();
+        const userB = await util.createUser();
 
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
         const {roomId} = createRoomResult;
 
         // join to room
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socketId));
-        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socketId));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
+        await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socket.id));
 
         // push state by userA before take turn
         let pushStateResult = await util
@@ -92,5 +92,8 @@ describe('/api/room/push-state', () => {
         assert(getStatesResult.states[1].state, 'state-2');
         assert(getStatesResult.states.length === 2);
         assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+
+        userA.socket.disconnect();
+        userB.socket.disconnect();
     });
 });
