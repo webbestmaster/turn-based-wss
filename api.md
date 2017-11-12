@@ -21,12 +21,29 @@ Socket: nothing
 > GET /api/room/join/:roomId/:userId/:socketId
 
 Request body: empty
-
 Response: see schema - joinIntoRoom
-type: jsonObject
+Socket: see schema - joinIntoRoomMessage
 
-// TODO: do it!!!
-!!!!From webSocket: json {state: {userAdded: {userId: <newUserId>}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ####Leave the room.
 > GET /api/room/leave/:roomId/:userId

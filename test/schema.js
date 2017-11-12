@@ -1,3 +1,5 @@
+const messageConst = require('./../module/room/message.json');
+
 const meta = {
     type: 'object',
     required: ['order', 'timestamp', 'hash'],
@@ -14,6 +16,7 @@ const meta = {
     }
 };
 
+module.exports.meta = meta;
 
 const createRoom = {
     type: 'object',
@@ -50,7 +53,7 @@ const joinIntoRoom = {
     required: ['type', 'roomId', 'userId', 'socketId'],
     properties: {
         type: {
-            type: 'string'
+            'enum': [messageConst.type.joinIntoRoom]
         },
         roomId: {
             type: 'string'
@@ -63,6 +66,42 @@ const joinIntoRoom = {
         }
     }
 };
+
+module.exports.joinIntoRoom = joinIntoRoom;
+
+
+const joinIntoRoomMessage = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.joinIntoRoom]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: {
+                    type: 'object',
+                    required: joinIntoRoom.required.concat('meta'),
+                    properties: Object.assign({},
+                        {properties: joinIntoRoom.properties},
+                        {meta}
+                    )
+                },
+                length: {
+                    type: 'number'
+                }
+            }
+        }
+    }
+};
+
+module.exports.joinIntoRoomMessage = joinIntoRoomMessage;
+
 
 const stateSchema = {
     type: 'object',
