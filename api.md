@@ -9,7 +9,7 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
 
 
 ####Get room ids.
@@ -20,9 +20,9 @@ Request body: empty
 Response: 
 @type: json
     @property: roomIds
-    @type: array
-        @items:
-            @type: string
+        @type: array
+            @items:
+                @type: string
 
 
 ####Join into the room.
@@ -33,12 +33,14 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: userId
-    @type: string
+        @type: string
     @property: socketId
-    @type: string
+        @type: string
 
+// TODO: do it!!!
+!!!!From webSocket: json {state: {userAdded: {userId: <newUserId>}}}
 
 ####Leave the room.
 > GET /api/room/leave/:roomId/:userId
@@ -48,9 +50,9 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: userId
-    @type: string
+        @type: string
 
 
 ####Take a turn.
@@ -61,9 +63,9 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: activeUserId
-    @type: string
+        @type: string
 
 
 ####Drop the turn.
@@ -74,9 +76,9 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: activeUserId
-    @type: string
+        @type: string
 
 
 ####Get users.
@@ -87,15 +89,15 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: users
-    @type: array
-        @items:
-            @type: object
-                @property: userId
-                @type: string
-                @property: socketId
-                @type: string
+        @type: array
+            @items:
+                @type: object
+                    @property: userId
+                    @type: string
+                    @property: socketId
+                    @type: string
 
 
 ####Push state.
@@ -104,26 +106,30 @@ Response:
 Request body:
 @type: object
     @property: *
-    @type: string
+        @type: string
 
 Response (success): 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: states
-    @type: object
-        @property: last
-        @type: object<your pushed state>
-        @property: length
-        @type: number
+        @type: object
+            @property: last
+                @type: object<your pushed state>
+            @property: length
+                @type: number
+
+Socket (success): the same as response
 
 Response (fail): 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: states
-    @type: object
-    @value: null
+        @type: object
+        @value: null
+
+Socket (fail): nothing
 
 
 ####Get last states
@@ -140,11 +146,11 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: states
-    @type: array
-        @items:
-            @type: object<pushed states>
+        @type: array
+            @items:
+                @type: object<pushed states>
 
 
 ####Get all settings
@@ -155,9 +161,9 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: settings
-    @type: object<your settings>
+        @type: object<your settings>
 
 
 ####Get setting
@@ -168,9 +174,9 @@ Request body: empty
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
     @property: value
-    @type: <value of setting>
+        @type: <value of setting>
 
 
 ####Set all settings
@@ -181,7 +187,7 @@ Request body: object<your settings>
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
 
 
 ####Set one setting
@@ -192,4 +198,4 @@ Request body: object<your setting>
 Response: 
 @type: json
     @property: roomId
-    @type: string
+        @type: string
