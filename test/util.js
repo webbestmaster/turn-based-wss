@@ -47,3 +47,8 @@ module.exports.pushStateResultSchema = {
         }
     }
 };
+
+module.exports.getServerOptions = () => ({
+    port: 3080,
+    'static': 'static' // optional parameter here
+});

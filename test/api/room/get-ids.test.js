@@ -3,10 +3,7 @@ const assert = require('chai').assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 
-const serverOptions = {
-    port: 3080,
-    'static': 'static' // optional parameter here
-};
+const serverOptions = util.getServerOptions();
 
 const url = 'http://localhost:' + serverOptions.port;
 

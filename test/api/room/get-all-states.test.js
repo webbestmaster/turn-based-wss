@@ -10,10 +10,7 @@ const path = require('path');
 
 const pushStateResultSchema = util.pushStateResultSchema;
 
-const serverOptions = {
-    port: 3080,
-    'static': 'static' // optional parameter here
-};
+const serverOptions = util.getServerOptions();
 
 const url = 'http://localhost:' + serverOptions.port;
 

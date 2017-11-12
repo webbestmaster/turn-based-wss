@@ -5,10 +5,7 @@ const util = require('./../../util');
 const path = require('path');
 const error = require('./../../../module/server/api/error.json');
 
-const serverOptions = {
-    port: 3080,
-    'static': 'static' // optional parameter here
-};
+const serverOptions = util.getServerOptions();
 
 const url = 'http://localhost:' + serverOptions.port;
 
