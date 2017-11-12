@@ -1,13 +1,17 @@
 /* global describe, it, before, after, beforeEach, afterEach */
-const assert = require('chai').assert;
+const chai = require('chai');
+const assert = chai.assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/create', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const createRoomSchema = require('./../../schema').createRoom;
+
+describe('GET /api/room/create', () => {
     let server = null;
 
     beforeEach(() => {
@@ -21,5 +25,6 @@ describe('/api/room/create', () => {
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
 
         assert(typeof createRoomResult.roomId === 'string');
+        assert.jsonSchema(createRoomResult, createRoomSchema);
     });
 });

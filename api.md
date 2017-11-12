@@ -4,25 +4,21 @@
 ####Create a room.
 > GET /api/room/create
 
-Request body: empty
-
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-
+Request: empty
+Response: see schema - createRoom
+Socket: nothing
 
 ####Get room ids.
 > GET /api/room/get-ids
 
-Request body: empty
+Request: empty
 
 Response: 
-@type: json
-    @property: roomIds
-        @type: array
-            @items:
-                @type: string
+type: jsonArray
+uniqueItems: true,
+items: {
+    type: 'string'
+}
 
 
 ####Join into the room.
@@ -30,14 +26,8 @@ Response:
 
 Request body: empty
 
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: userId
-        @type: string
-    @property: socketId
-        @type: string
+Response: see schema - joinIntoRoom
+type: jsonObject
 
 // TODO: do it!!!
 !!!!From webSocket: json {state: {userAdded: {userId: <newUserId>}}}
@@ -110,6 +100,8 @@ Request body:
 
 Response (success): 
 @type: json
+    @property: type
+        @type: string
     @property: roomId
         @type: string
     @property: states
@@ -119,10 +111,12 @@ Response (success):
             @property: length
                 @type: number
 
-Socket (success): the same as response
+Socket (success): the same response
 
 Response (fail): 
 @type: json
+    @property: type
+        @type: string
     @property: roomId
         @type: string
     @property: states

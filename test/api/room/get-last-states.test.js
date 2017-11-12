@@ -8,7 +8,7 @@ const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const path = require('path');
 
-const pushStateResultSchema = util.pushStateResultSchema;
+const stateArraySchema = util.stateArraySchema;
 
 const serverOptions = util.getServerOptions();
 
@@ -47,7 +47,7 @@ describe('/api/room/get-last-states', () => {
             .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         // push state by userA again
         pushStateResult = await util
@@ -59,14 +59,14 @@ describe('/api/room/get-last-states', () => {
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1000));
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         userA.socket.disconnect();
     });

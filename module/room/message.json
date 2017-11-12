@@ -1,0 +1,6 @@
+{
+    "type": {
+        "joinIntoRoom": "room__join-into-room",
+        "pushState": "room__push-state"
+    }
+}

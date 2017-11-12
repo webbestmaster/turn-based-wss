@@ -8,7 +8,7 @@ const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const path = require('path');
 
-const pushStateResultSchema = util.pushStateResultSchema;
+const stateArraySchema = util.stateArraySchema;
 
 const serverOptions = util.getServerOptions();
 
@@ -51,7 +51,7 @@ describe('/api/room/get-all-states', () => {
         getAllStatesResult = await util.getAsJson(url + path.join('/api/room/get-all-states/', roomId));
         assert(getAllStatesResult.roomId, roomId);
         assert(getAllStatesResult.states.length === 4);
-        assert.jsonSchema(getAllStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getAllStatesResult.states, stateArraySchema);
 
         userA.socket.disconnect();
     });

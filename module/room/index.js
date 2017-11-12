@@ -2,6 +2,7 @@ const roomMaster = require('./master').roomMaster;
 const RoomConnection = require('./room-connection').RoomConnection;
 const find = require('lodash/find');
 const sha1 = require('sha1');
+const messageConst = require('./message.json');
 let roomId = 0;
 
 class Room {
@@ -70,11 +71,18 @@ class Room {
         }
 
         const newRoomConnection = new RoomConnection({
-            socketId: roomConnectionOptions.socketId,
-            userId: roomConnectionOptions.userId
+            userId: roomConnectionOptions.userId,
+            socketId: roomConnectionOptions.socketId
         });
 
         connections.push(newRoomConnection);
+
+        room.pushStateForce({
+            type: messageConst.type.joinIntoRoom,
+            roomId: room.getId(),
+            userId: roomConnectionOptions.userId,
+            socketId: roomConnectionOptions.socketId
+        });
     }
 
     leave(userId) {
@@ -95,18 +103,23 @@ class Room {
 
     pushState(userId, state) {
         const room = this;
-        const states = room.getStates();
-
         const activeUserId = room.getAttr().activeUserId;
 
         if (activeUserId !== userId) {
             return null;
         }
 
+        return this.pushStateForce(state);
+    }
+
+    pushStateForce(state) {
+        const room = this;
+        const states = room.getStates();
         const order = states.length;
         const timestamp = Date.now();
 
         Object.assign(state, {
+            type: state.type || messageConst.type.pushState,
             meta: {
                 order,
                 timestamp,
@@ -117,6 +130,7 @@ class Room {
         states.push(state);
 
         room.emit({
+            type: state.type,
             roomId: room.getId(),
             states: {
                 last: state,

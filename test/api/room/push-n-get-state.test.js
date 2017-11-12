@@ -8,7 +8,8 @@ const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const path = require('path');
 
-const pushStateResultSchema = util.pushStateResultSchema;
+const stateArraySchema = util.stateArraySchema;
+const messageConst = require('./../../../module/room/message.json');
 
 const serverOptions = util.getServerOptions();
 
@@ -39,6 +40,8 @@ describe('/api/room/push-state', () => {
         let pushStateResult = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-1'});
 
+        assert(pushStateResult.type === messageConst.type.pushState);
+        assert(pushStateResult.roomId === roomId);
         assert(pushStateResult.states === null);
 
         // take turn
@@ -47,15 +50,17 @@ describe('/api/room/push-state', () => {
         // push state by userA
         pushStateResult = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-1'});
+        assert(pushStateResult.type === messageConst.type.pushState);
+        assert(pushStateResult.roomId === roomId);
         assert(pushStateResult.states.length === 1);
-        assert.jsonSchema([pushStateResult.states.last], pushStateResultSchema);
+        assert.jsonSchema([pushStateResult.states.last], stateArraySchema);
 
         let getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
         assert(pushStateResult.roomId === roomId);
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         // push state by userB without turn
         pushStateResult = await util
@@ -68,7 +73,7 @@ describe('/api/room/push-state', () => {
             .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1));
 
         assert(getStatesResult.states[0].state === 'state-1');
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         // leave turn by userA
         await util.getAsJson(url + path.join('/api/room/drop-turn/', roomId, userA.userId));
@@ -83,7 +88,7 @@ describe('/api/room/push-state', () => {
 
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         getStatesResult = await util
             .getAsJson(url + path.join('/api/room/get-last-states/', roomId, '/' + 1000));
@@ -91,7 +96,7 @@ describe('/api/room/push-state', () => {
         assert(getStatesResult.states[0].state, 'state-1');
         assert(getStatesResult.states[1].state, 'state-2');
         assert(getStatesResult.states.length === 2);
-        assert.jsonSchema(getStatesResult.states, pushStateResultSchema);
+        assert.jsonSchema(getStatesResult.states, stateArraySchema);
 
         userA.socket.disconnect();
         userB.socket.disconnect();

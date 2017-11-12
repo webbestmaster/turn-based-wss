@@ -1,5 +1,6 @@
 const roomMaster = require('./../../../room/master').roomMaster;
 const error = require('./../error.json');
+const messageConst = require('./../../../room/message.json');
 
 module.exports = (req, res) => {
     const {params, body} = req;
@@ -22,6 +23,7 @@ module.exports = (req, res) => {
 
     if (lastState === null) {
         res.json({
+            type: messageConst.type.pushState,
             roomId,
             states: null
         });
@@ -29,6 +31,7 @@ module.exports = (req, res) => {
     }
 
     res.json({
+        type: messageConst.type.pushState,
         roomId,
         states: {
             last: lastState,

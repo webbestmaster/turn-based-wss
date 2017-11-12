@@ -4,7 +4,7 @@ const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const path = require('path');
 const error = require('./../../../module/server/api/error.json');
-
+const messageConst = require('./../../../module/room/message.json');
 const serverOptions = util.getServerOptions();
 
 const url = 'http://localhost:' + serverOptions.port;
@@ -30,17 +30,19 @@ describe('/api/room/join', () => {
         let joinUserAResult = await util
             .getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
 
+        assert(joinUserAResult.type === messageConst.type.joinIntoRoom);
+        assert(joinUserAResult.roomId === roomId);
         assert(joinUserAResult.userId === userA.userId);
         assert(joinUserAResult.socketId === userA.socket.id);
-        assert(joinUserAResult.roomId === roomId);
 
         // join to room as userB
         let joinUserBResult = await util
             .getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socket.id));
 
+        assert(joinUserBResult.type === messageConst.type.joinIntoRoom);
+        assert(joinUserBResult.roomId === roomId);
         assert(joinUserBResult.userId === userB.userId);
         assert(joinUserBResult.socketId === userB.socket.id);
-        assert(joinUserBResult.roomId === roomId);
 
         // check users exists - should be 2 users
         let getUsersResult = await util
@@ -56,17 +58,19 @@ describe('/api/room/join', () => {
         joinUserAResult = await util
             .getAsJson(url + path.join('/api/room/join/', roomId, userA.userId, userA.socket.id));
 
+        assert(joinUserAResult.type === messageConst.type.joinIntoRoom);
+        assert(joinUserAResult.roomId === roomId);
         assert(joinUserAResult.userId === userA.userId);
         assert(joinUserAResult.socketId === userA.socket.id);
-        assert(joinUserAResult.roomId === roomId);
 
         // join to room as userB
         joinUserBResult = await util
             .getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socket.id));
 
+        assert(joinUserBResult.type === messageConst.type.joinIntoRoom);
+        assert(joinUserBResult.roomId === roomId);
         assert(joinUserBResult.userId === userB.userId);
         assert(joinUserBResult.socketId === userB.socket.id);
-        assert(joinUserBResult.roomId === roomId);
 
         // check users exists - should be 2 users
         getUsersResult = await util
@@ -76,6 +80,7 @@ describe('/api/room/join', () => {
             {userId: userA.userId, socketId: userA.socket.id},
             {userId: userB.userId, socketId: userB.socket.id}
         ]);
+
 
         userA.socket.disconnect();
         userB.socket.disconnect();

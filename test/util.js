@@ -38,36 +38,6 @@ module.exports.createUser = () => {
     });
 };
 
-module.exports.pushStateResultSchema = {
-    title: 'push state schema v1',
-    type: 'array',
-    uniqueItems: true,
-    items: {
-        type: 'object',
-        required: ['state', 'meta'],
-        properties: {
-            state: {
-                type: 'string' // user's type
-            },
-            meta: {
-                type: 'object',
-                required: ['order', 'timestamp', 'hash'],
-                properties: {
-                    order: {
-                        type: 'number'
-                    },
-                    timestamp: {
-                        type: 'number'
-                    },
-                    hash: {
-                        type: 'string'
-                    }
-                }
-            }
-        }
-    }
-};
-
 function getServerOptions() {
     return {
         port: 3080,
