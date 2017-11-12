@@ -29,10 +29,16 @@ module.exports.createRoom = createRoom;
 
 
 const getRoomIds = {
-    type: 'array',
-    uniqueItems: true,
-    items: {
-        type: 'string'
+    type: 'object',
+    required: ['roomIds'],
+    properties: {
+        roomIds: {
+            type: 'array',
+            uniqueItems: true,
+            items: {
+                type: 'string'
+            }
+        }
     }
 };
 

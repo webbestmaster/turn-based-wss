@@ -1,13 +1,17 @@
 /* global describe, it, before, after, beforeEach, afterEach */
-const assert = require('chai').assert;
+const chai = require('chai');
+const assert = chai.assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/get-ids', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const getRoomIdsSchema = require('./../../schema').getRoomIds;
+
+describe('GET /api/room/get-ids', () => {
     let server = null;
 
     beforeEach(() => {
@@ -29,6 +33,6 @@ describe('/api/room/get-ids', () => {
         const roomIds = roomsIdsData.roomIds;
 
         assert(roomIds.length === 5); // see above - exact 5 rooms
-        assert(roomIds.every(roomId => typeof roomId === 'string'));
+        assert.jsonSchema(roomsIdsData, getRoomIdsSchema);
     });
 });

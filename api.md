@@ -8,17 +8,13 @@ Request: empty
 Response: see schema - createRoom
 Socket: nothing
 
+
 ####Get room ids.
 > GET /api/room/get-ids
 
 Request: empty
-
-Response: 
-type: jsonArray
-uniqueItems: true,
-items: {
-    type: 'string'
-}
+Response: see schema - getRoomIds
+Socket: nothing
 
 
 ####Join into the room.
