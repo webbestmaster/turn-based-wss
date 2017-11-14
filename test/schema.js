@@ -103,6 +103,58 @@ const joinIntoRoomMessage = {
 module.exports.joinIntoRoomMessage = joinIntoRoomMessage;
 
 
+const leaveFromRoom = {
+    type: 'object',
+    required: ['type', 'roomId', 'userId'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.leaveFromRoom]
+        },
+        roomId: {
+            type: 'string'
+        },
+        userId: {
+            type: 'string'
+        }
+    }
+};
+
+module.exports.leaveFromRoom = leaveFromRoom;
+
+
+const leaveFromRoomMessage = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.leaveFromRoom]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: {
+                    type: 'object',
+                    required: leaveFromRoom.required.concat('meta'),
+                    properties: Object.assign({},
+                        {properties: leaveFromRoom.properties},
+                        {meta}
+                    )
+                },
+                length: {
+                    type: 'number'
+                }
+            }
+        }
+    }
+};
+
+module.exports.leaveFromRoomMessage = leaveFromRoomMessage;
+
+
 const stateSchema = {
     type: 'object',
     required: ['state', 'meta'],

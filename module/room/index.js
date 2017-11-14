@@ -99,6 +99,12 @@ class Room {
         room.dropTurn(userId);
 
         connections.splice(connections.indexOf(existRoomConnection), 1);
+
+        room.pushStateForce({
+            type: messageConst.type.leaveFromRoom,
+            roomId: room.getId(),
+            userId
+        });
     }
 
     pushState(userId, state) {

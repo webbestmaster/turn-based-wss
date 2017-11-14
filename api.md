@@ -25,37 +25,36 @@ Response: see schema - joinIntoRoom
 Socket: see schema - joinIntoRoomMessage
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ####Leave the room.
 > GET /api/room/leave/:roomId/:userId
 
 Request body: empty
+Response: see schema - leaveFromRoom
+Socket: see schema - leaveFromRoomMessage, all except leaved user
 
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: userId
-        @type: string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ####Take a turn.

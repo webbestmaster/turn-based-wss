@@ -1,14 +1,20 @@
 /* global describe, it, before, after, beforeEach, afterEach */
-const assert = require('chai').assert;
+const chai = require('chai');
+const assert = chai.assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-const path = require('path');
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/leave', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const path = require('path');
+const leaveFromRoomSchema = require('./../../schema').leaveFromRoom;
+const leaveFromRoomMessageSchema = require('./../../schema').leaveFromRoomMessage;
+const messageConst = require('./../../../module/room/message.json');
+
+describe('GET /api/room/leave/:roomId/:userId', () => {
     let server = null;
 
     beforeEach(() => {
@@ -34,8 +40,11 @@ describe('/api/room/leave', () => {
         // leave from room as userA
         const leaveUserAResult = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userA.userId));
 
-        assert(leaveUserAResult.userId === userA.userId);
+        assert(leaveUserAResult.type === messageConst.type.leaveFromRoom);
         assert(leaveUserAResult.roomId === roomId);
+        assert(leaveUserAResult.userId === userA.userId);
+        assert.jsonSchema(leaveUserAResult, leaveFromRoomSchema);
+        assert.jsonSchema(userB.messages[1], leaveFromRoomMessageSchema);
 
         let getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
@@ -45,8 +54,13 @@ describe('/api/room/leave', () => {
         // leave from room as userB
         const leaveUserBResult = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
 
-        assert(leaveUserBResult.userId === userB.userId);
+        assert(leaveUserBResult.type === messageConst.type.leaveFromRoom);
         assert(leaveUserBResult.roomId === roomId);
+        assert(leaveUserBResult.userId === userB.userId);
+        assert.jsonSchema(leaveUserBResult, leaveFromRoomSchema);
+        assert.jsonSchema(userB.messages[1], leaveFromRoomMessageSchema);
+        assert(userB.messages.length === 2);
+
 
         getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
@@ -56,8 +70,13 @@ describe('/api/room/leave', () => {
         // leave from room as userB again
         const leaveUserBResultAgain = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
 
-        assert(leaveUserBResultAgain.userId === userB.userId);
+        assert(leaveUserBResultAgain.type === messageConst.type.leaveFromRoom);
         assert(leaveUserBResultAgain.roomId === roomId);
+        assert(leaveUserBResultAgain.userId === userB.userId);
+        assert.jsonSchema(leaveUserBResult, leaveFromRoomSchema);
+
+        assert(userA.messages.length === 2); // messages - userA join, userB join
+        assert(userB.messages.length === 2); // messages - userB join, userA leave
 
         getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));

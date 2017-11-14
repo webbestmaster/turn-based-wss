@@ -1,6 +1,7 @@
 {
     "type": {
         "joinIntoRoom": "room__join-into-room",
+        "leaveFromRoom": "room__leave-from-room",
         "pushState": "room__push-state"
     }
 }
