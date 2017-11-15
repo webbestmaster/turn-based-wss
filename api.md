@@ -82,21 +82,6 @@ Response (fail): see schema - pushStateFail
 Socket (fail): nothing
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ####Get last states
 > GET /api/room/get-last-states/:roomId/:count
 
@@ -107,15 +92,23 @@ Socket (fail): nothing
 > GET /api/room/get-all-states/:roomId
 
 Request body: empty
+Response: see schema - getStates
+Socket: nothing
 
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: states
-        @type: array
-            @items:
-                @type: object<pushed states>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

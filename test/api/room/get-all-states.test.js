@@ -1,20 +1,18 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
-
-chai.use(require('chai-json-schema'));
 const assert = chai.assert;
-
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-const path = require('path');
-
-const stateArraySchema = util.stateArraySchema;
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/get-all-states', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const path = require('path');
+const getStatesSchema = require('./../../schema').getStates;
+
+describe('GET /api/room/get-all-states/:roomId', () => {
     let server = null;
 
     beforeEach(() => {
@@ -39,7 +37,8 @@ describe('/api/room/get-all-states', () => {
         // get all states
         let getAllStatesResult = await util.getAsJson(url + path.join('/api/room/get-all-states/', roomId));
 
-        assert.deepEqual(getAllStatesResult, {roomId, states: []});
+        assert(getAllStatesResult.states.length === 2);
+        assert(getAllStatesResult.roomId === roomId);
 
         // push states by userA
         await util.postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-1'});
@@ -50,8 +49,16 @@ describe('/api/room/get-all-states', () => {
         // get all states again
         getAllStatesResult = await util.getAsJson(url + path.join('/api/room/get-all-states/', roomId));
         assert(getAllStatesResult.roomId, roomId);
-        assert(getAllStatesResult.states.length === 4);
-        assert.jsonSchema(getAllStatesResult.states, stateArraySchema);
+        assert(getAllStatesResult.states.length === 6); // join, take, push x 4
+        assert.jsonSchema({
+            roomId,
+            states: [
+                getAllStatesResult.states[2],
+                getAllStatesResult.states[3],
+                getAllStatesResult.states[4],
+                getAllStatesResult.states[5]
+            ]
+        }, getStatesSchema);
 
         userA.socket.disconnect();
     });

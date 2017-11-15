@@ -1,5 +1,6 @@
 const messageConst = require('./../module/room/message.json');
 
+
 const meta = {
     type: 'object',
     required: ['order', 'timestamp', 'hash'],
@@ -19,7 +20,7 @@ const meta = {
 module.exports.meta = meta;
 
 
-const stateSchema = {
+const state = {
     type: 'object',
     required: ['state', 'meta'],
     properties: {
@@ -30,13 +31,13 @@ const stateSchema = {
     }
 };
 
-module.exports.stateSchema = stateSchema;
+module.exports.state = state;
 
 
 const stateArraySchema = {
     type: 'array',
     uniqueItems: true,
-    items: stateSchema
+    items: state
 };
 
 module.exports.stateArraySchema = stateArraySchema;
@@ -297,7 +298,7 @@ const pushState = {
             type: 'object',
             required: ['last', 'length'],
             properties: {
-                last: stateSchema,
+                last: state,
                 length: {
                     type: 'number'
                 }
@@ -307,6 +308,7 @@ const pushState = {
 };
 
 module.exports.pushState = pushState;
+
 
 const pushStateFail = {
     type: 'object',
@@ -364,3 +366,20 @@ const pushStateMessage = {
 
 module.exports.pushStateMessage = pushStateMessage;
 
+
+const getStates = {
+    type: 'object',
+    required: ['roomId', 'states'],
+    properties: {
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'array',
+            uniqueItems: true,
+            items: state
+        }
+    }
+};
+
+module.exports.getStates = getStates;

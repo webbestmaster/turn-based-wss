@@ -1,20 +1,20 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
-
-chai.use(require('chai-json-schema'));
 const assert = chai.assert;
-
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-const path = require('path');
-
-const stateArraySchema = util.stateArraySchema;
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/get-states-from-hash', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const path = require('path');
+const getStatesSchema = require('./../../schema').getStates;
+const stateSchema = require('./../../schema').state;
+const pushStateSchema = require('./../../schema').pushState;
+
+describe('GET /api/room/get-states-from-hash/:roomId/:hash', () => {
     let server = null;
 
     beforeEach(() => {
@@ -47,22 +47,22 @@ describe('/api/room/get-states-from-hash', () => {
         const pushStateResultA = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-a'});
 
-        assert.jsonSchema([pushStateResultA.states.last], stateArraySchema);
+        assert.jsonSchema(pushStateResultA.states.last, stateSchema);
 
         const pushStateResultB = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-b'});
 
-        assert.jsonSchema([pushStateResultB.states.last], stateArraySchema);
+        assert.jsonSchema(pushStateResultB.states.last, stateSchema);
 
         const pushStateResultC = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-c'});
 
-        assert.jsonSchema([pushStateResultC.states.last], stateArraySchema);
+        assert.jsonSchema(pushStateResultC.states.last, stateSchema);
 
         const pushStateResultD = await util
             .postAsJson(url + path.join('/api/room/push-state/', roomId, userA.userId), {state: 'state-d'});
 
-        assert.jsonSchema([pushStateResultD.states.last], stateArraySchema);
+        assert.jsonSchema(pushStateResultD.states.last, stateSchema);
 
         // get states from not-exists-hash again
         getStatesFromNotExistsHash = await util
@@ -87,14 +87,22 @@ describe('/api/room/get-states-from-hash', () => {
         assert(getStatesFromHashB.states.length === 2);
         assert.deepEqual(getStatesFromHashB.states[0].state, 'state-c');
         assert.deepEqual(getStatesFromHashB.states[1].state, 'state-d');
-        assert.jsonSchema(getStatesFromHashB.states, stateArraySchema);
+        assert.jsonSchema(getStatesFromHashB, getStatesSchema);
 
         // get all states again
         const getAllStatesResult = await util.getAsJson(url + path.join('/api/room/get-all-states/', roomId));
 
         assert(getAllStatesResult.roomId, roomId);
-        assert(getAllStatesResult.states.length === 4);
-        assert.jsonSchema(getAllStatesResult.states, stateArraySchema);
+        assert(getAllStatesResult.states.length === 6); // join, take, push x 4
+        assert.jsonSchema({
+            roomId,
+            states: [
+                getAllStatesResult.states[2],
+                getAllStatesResult.states[3],
+                getAllStatesResult.states[4],
+                getAllStatesResult.states[5]
+            ]
+        }, getStatesSchema);
 
         userA.socket.disconnect();
     });

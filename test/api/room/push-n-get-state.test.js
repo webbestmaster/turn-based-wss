@@ -12,7 +12,7 @@ chai.use(require('chai-json-schema'));
 const path = require('path');
 const pushStateSchema = require('./../../schema').pushState;
 const pushStateFailSchema = require('./../../schema').pushStateFail;
-const stateSchema = require('./../../schema').stateSchema;
+const stateSchema = require('./../../schema').state;
 const stateArraySchema = require('./../../schema').stateArraySchema;
 const pushStateMessageSchema = require('./../../schema').pushStateMessage;
 const messageConst = require('./../../../module/room/message.json');
