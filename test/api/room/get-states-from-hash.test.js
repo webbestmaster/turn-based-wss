@@ -12,7 +12,6 @@ chai.use(require('chai-json-schema'));
 const path = require('path');
 const getStatesSchema = require('./../../schema').getStates;
 const stateSchema = require('./../../schema').state;
-const pushStateSchema = require('./../../schema').pushState;
 
 describe('GET /api/room/get-states-from-hash/:roomId/:hash', () => {
     let server = null;
