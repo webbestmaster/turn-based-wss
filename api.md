@@ -20,7 +20,7 @@ Socket: nothing
 ####Join into the room.
 > GET /api/room/join/:roomId/:userId/:socketId
 
-Request body: empty
+Request: empty
 Response: see schema - joinIntoRoom
 Socket: see schema - joinIntoRoomMessage
 
@@ -28,7 +28,7 @@ Socket: see schema - joinIntoRoomMessage
 ####Leave the room.
 > GET /api/room/leave/:roomId/:userId
 
-Request body: empty
+Request: empty
 Response: see schema - leaveFromRoom
 Socket: see schema - leaveFromRoomMessage, all except leaved user
 
@@ -36,7 +36,7 @@ Socket: see schema - leaveFromRoomMessage, all except leaved user
 ####Take a turn.
 > GET /api/room/take-turn/:roomId/:userId
 
-Request body: empty
+Request: empty
 Response (success): see schema - takeTurn
 Socket (success): see schema - takeTurnMessage
 
@@ -51,7 +51,7 @@ Socket: nothing
 ####Drop the turn.
 > GET /api/room/drop-turn/:roomId/:userId
 
-Request body: empty
+Request: empty
 Response (success): see schema - dropTurn
 Socket (success): see schema - dropTurnMessage
 
@@ -66,7 +66,7 @@ Socket: nothing
 ####Get users.
 > GET /api/room/get-users/:roomId
 
-Request body: empty
+Request: empty
 Response: {{userId: 'string', socketId: 'string'}[]}
 Socket: nothing
 
@@ -74,7 +74,7 @@ Socket: nothing
 ####Push state.
 > POST /api/room/push-state/:roomId/:userId
 
-Request body: <your-state>
+Request: <your-state>
 Response (success): see schema - pushState
 Socket (success): see schema - pushStateMessage
 
@@ -85,85 +85,47 @@ Socket (fail): nothing
 ####Get last states
 > GET /api/room/get-last-states/:roomId/:count
 
+see: Get all states
+
+
 ####Get states from hash
 > GET /api/room/get-states-from-hash/:roomId/:hash
+
+see: Get all states
+
 
 ####Get all states
 > GET /api/room/get-all-states/:roomId
 
-Request body: empty
+Request: empty
 Response: see schema - getStates
 Socket: nothing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ####Get all settings
 > GET /api/room/get-all-settings/:roomId
 
-Request body: empty
-
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: settings
-        @type: object<your settings>
+Request: empty
+Response: {{roomId: 'string', settings: 'any'}}
 
 
 ####Get setting
 > GET /api/room/get-setting/:roomId/:key
 
-Request body: empty
-
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: value
-        @type: <value of setting>
+Request: empty
+Response: {{roomId: 'string', value: 'any'}}
 
 
 ####Set all settings
 > GET /api/room/set-all-settings/:roomId
 
-Request body: object<your settings>
-
-Response: 
-@type: json
-    @property: roomId
-        @type: string
+WARNING: remove previous settings
+Request: <your-settings> ({key1: value1, key2: value2})
+Response: {{roomId: 'string'}}
 
 
 ####Set one setting
 > GET /api/room/set-setting/:roomId
 
-Request body: object<your setting>
-
-Response: 
-@type: json
-    @property: roomId
-        @type: string
+Request: <your-settings> ({key: value})
+Response: {{roomId: 'string'}}

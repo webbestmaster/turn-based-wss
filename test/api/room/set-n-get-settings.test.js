@@ -1,14 +1,17 @@
 /* global describe, it, before, after, beforeEach, afterEach */
-const assert = require('chai').assert;
+const chai = require('chai');
+const assert = chai.assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-const path = require('path');
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/(set-setting|set-all-settings|get-setting|get-all-settings)', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const path = require('path');
+
+describe('POST|GET /api/room/(set-setting|set-all-settings|get-setting|get-all-settings)', () => {
     let server = null;
 
     beforeEach(() => {
@@ -18,7 +21,7 @@ describe('/api/room/(set-setting|set-all-settings|get-setting|get-all-settings)'
 
     afterEach(() => server.destroy());
 
-    it('set setting(s)', async () => {
+    it('set/get setting(s)', async () => {
         const createRoomResult = await util.getAsJson(url + '/api/room/create');
 
         const {roomId} = createRoomResult;
