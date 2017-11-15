@@ -63,48 +63,24 @@ Response: see schema - dropTurn
 Socket: nothing
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ####Get users.
 > GET /api/room/get-users/:roomId
 
 Request body: empty
+Response: {{userId: 'string', socketId: 'string'}[]}
+Socket: nothing
 
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: users
-        @type: array
-            @items:
-                @type: object
-                    @property: userId
-                    @type: string
-                    @property: socketId
-                    @type: string
+
+
+
+
+
+
+
+
+
+
+
 
 
 ####Push state.
