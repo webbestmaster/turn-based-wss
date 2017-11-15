@@ -18,6 +18,30 @@ const meta = {
 
 module.exports.meta = meta;
 
+
+const stateSchema = {
+    type: 'object',
+    required: ['state', 'meta'],
+    properties: {
+        state: {
+            type: 'string' // user's type
+        },
+        meta
+    }
+};
+
+module.exports.stateSchema = stateSchema;
+
+
+const stateArraySchema = {
+    type: 'array',
+    uniqueItems: true,
+    items: stateSchema
+};
+
+module.exports.stateArraySchema = stateArraySchema;
+
+
 const createRoom = {
     type: 'object',
     required: ['roomId'],
@@ -259,19 +283,84 @@ const dropTurnMessage = {
 module.exports.dropTurnMessage = dropTurnMessage;
 
 
-const stateSchema = {
+const pushState = {
     type: 'object',
-    required: ['state', 'meta'],
+    required: ['type', 'roomId', 'states'],
     properties: {
-        state: {
-            type: 'string' // user's type
+        type: {
+            'enum': [messageConst.type.pushState]
         },
-        meta
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: stateSchema,
+                length: {
+                    type: 'number'
+                }
+            }
+        }
     }
 };
 
-const stateArraySchema = {
-    type: 'array',
-    uniqueItems: true,
-    items: stateSchema
+module.exports.pushState = pushState;
+
+const pushStateFail = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.pushState]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            'enum': [null]
+        }
+    }
 };
+
+module.exports.pushStateFail = pushStateFail;
+
+
+const pushStateMessage = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.pushState]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: {
+                    type: 'object',
+                    required: ['type', 'state', 'meta'],
+                    properties: {
+                        type: {
+                            'enum': [messageConst.type.pushState]
+                        },
+                        state: {
+                            type: 'string'
+                        },
+                        meta
+                    }
+                },
+                length: {
+                    type: 'number'
+                }
+            }
+        }
+    }
+};
+
+module.exports.pushStateMessage = pushStateMessage;
+

@@ -71,52 +71,30 @@ Response: {{userId: 'string', socketId: 'string'}[]}
 Socket: nothing
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 ####Push state.
 > POST /api/room/push-state/:roomId/:userId
 
-Request body:
-@type: object
-    @property: *
-        @type: string
+Request body: <your-state>
+Response (success): see schema - pushState
+Socket (success): see schema - pushStateMessage
 
-Response (success): 
-@type: json
-    @property: type
-        @type: string
-    @property: roomId
-        @type: string
-    @property: states
-        @type: object
-            @property: last
-                @type: object<your pushed state>
-            @property: length
-                @type: number
-
-Socket (success): the same response
-
-Response (fail): 
-@type: json
-    @property: type
-        @type: string
-    @property: roomId
-        @type: string
-    @property: states
-        @type: object
-        @value: null
-
+Response (fail): see schema - pushStateFail
 Socket (fail): nothing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ####Get last states
@@ -138,6 +116,16 @@ Response:
         @type: array
             @items:
                 @type: object<pushed states>
+
+
+
+
+
+
+
+
+
+
 
 
 ####Get all settings
