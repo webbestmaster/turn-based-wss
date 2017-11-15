@@ -155,6 +155,110 @@ const leaveFromRoomMessage = {
 module.exports.leaveFromRoomMessage = leaveFromRoomMessage;
 
 
+const takeTurn = {
+    type: 'object',
+    required: ['type', 'roomId', 'activeUserId'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.takeTurn]
+        },
+        roomId: {
+            type: 'string'
+        },
+        activeUserId: {
+            type: 'string'
+        }
+    }
+};
+
+module.exports.takeTurn = takeTurn;
+
+
+const takeTurnMessage = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.takeTurn]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: {
+                    type: 'object',
+                    required: takeTurn.required.concat('meta'),
+                    properties: Object.assign({},
+                        {properties: takeTurn.properties},
+                        {meta}
+                    )
+                },
+                length: {
+                    type: 'number'
+                }
+            }
+        }
+    }
+};
+
+module.exports.takeTurnMessage = takeTurnMessage;
+
+
+const dropTurn = {
+    type: 'object',
+    required: ['type', 'roomId', 'activeUserId'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.dropTurn]
+        },
+        roomId: {
+            type: 'string'
+        },
+        activeUserId: {
+            type: 'string'
+        }
+    }
+};
+
+module.exports.dropTurn = dropTurn;
+
+
+const dropTurnMessage = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.dropTurn]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: {
+                    type: 'object',
+                    required: dropTurn.required.concat('meta'),
+                    properties: Object.assign({},
+                        {properties: dropTurn.properties},
+                        {meta}
+                    )
+                },
+                length: {
+                    type: 'number'
+                }
+            }
+        }
+    }
+};
+
+module.exports.dropTurnMessage = dropTurnMessage;
+
+
 const stateSchema = {
     type: 'object',
     required: ['state', 'meta'],

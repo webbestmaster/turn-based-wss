@@ -1,14 +1,20 @@
 /* global describe, it, before, after, beforeEach, afterEach */
-const assert = require('chai').assert;
+const chai = require('chai');
+const assert = chai.assert;
 const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
-const path = require('path');
-
 const serverOptions = util.getServerOptions();
-
 const url = 'http://localhost:' + serverOptions.port;
 
-describe('/api/room/take-turn', () => {
+chai.use(require('chai-json-schema'));
+
+// self variables
+const path = require('path');
+const takeTurnSchema = require('./../../schema').takeTurn;
+const takeTurnMessageSchema = require('./../../schema').takeTurnMessage;
+const messageConst = require('./../../../module/room/message.json');
+
+describe('GET /api/room/take-turn/:roomId/:userId', () => {
     let server = null;
 
     beforeEach(() => {
@@ -28,19 +34,29 @@ describe('/api/room/take-turn', () => {
         // join to room
         await util.getAsJson(url + path.join('/api/room/join/', roomId, user.userId, user.socket.id));
 
-        // take turn
+        // take turn by userNotExists
         let takeTurnResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, userNotExists.userId));
 
+        assert(takeTurnResult.type === messageConst.type.takeTurn);
         assert(takeTurnResult.roomId === roomId);
-        assert(takeTurnResult.activeUserId === null);
+        assert(takeTurnResult.activeUserId !== userNotExists.userId);
+        assert(takeTurnResult.activeUserId !== user.userId);
+        assert.jsonSchema(takeTurnResult, takeTurnSchema);
+        assert(user.messages.length === 1); // join into room by user
+        assert(userNotExists.messages.length === 0); // no room, no messages
 
-        // take again
+        // take turn by userNotExists again
         takeTurnResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, userNotExists.userId));
 
+        assert(takeTurnResult.type === messageConst.type.takeTurn);
         assert(takeTurnResult.roomId === roomId);
-        assert(takeTurnResult.activeUserId === null);
+        assert(takeTurnResult.activeUserId !== userNotExists.userId);
+        assert(takeTurnResult.activeUserId !== user.userId);
+        assert.jsonSchema(takeTurnResult, takeTurnSchema);
+        assert(user.messages.length === 1); // join into room by user
+        assert(userNotExists.messages.length === 0); // no room, no messages
 
         user.socket.disconnect();
         userNotExists.socket.disconnect();
@@ -59,15 +75,25 @@ describe('/api/room/take-turn', () => {
         let takeTurnResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, user.userId));
 
+        assert(takeTurnResult.type === messageConst.type.takeTurn);
         assert(takeTurnResult.roomId === roomId);
         assert(takeTurnResult.activeUserId === user.userId);
+        assert.jsonSchema(takeTurnResult, takeTurnSchema);
+        assert(user.messages.length === 2); // join and take turn
+        assert(user.messages[1].states.length === 2); // join and take turn
+        assert.jsonSchema(user.messages[1], takeTurnMessageSchema);
 
-        // take again
+        // take turn again
         takeTurnResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, user.userId));
 
+        assert(takeTurnResult.type === messageConst.type.takeTurn);
         assert(takeTurnResult.roomId === roomId);
         assert(takeTurnResult.activeUserId === user.userId);
+        assert.jsonSchema(takeTurnResult, takeTurnSchema);
+        assert(user.messages.length === 2); // join and take turn
+        assert(user.messages[1].states.length === 2); // join and take turn
+        assert.jsonSchema(user.messages[1], takeTurnMessageSchema);
 
         user.socket.disconnect();
     });
@@ -87,23 +113,37 @@ describe('/api/room/take-turn', () => {
         const takeTurnUserAResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
 
+        assert(takeTurnUserAResult.type === messageConst.type.takeTurn);
         assert(takeTurnUserAResult.roomId === roomId);
         assert(takeTurnUserAResult.activeUserId === userA.userId);
+        assert.jsonSchema(takeTurnUserAResult, takeTurnSchema);
+        assert(userA.messages.length === 3); // join, join and take turn
+        assert(userA.messages[2].states.length === 3); // join, join and take turn
+        assert.jsonSchema(userA.messages[2], takeTurnMessageSchema);
 
         // take as userA again
         const takeTurnUserAResultAgain = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, userA.userId));
 
+        assert(takeTurnUserAResultAgain.type === messageConst.type.takeTurn);
         assert(takeTurnUserAResultAgain.roomId === roomId);
         assert(takeTurnUserAResultAgain.activeUserId === userA.userId);
+        assert.jsonSchema(takeTurnUserAResultAgain, takeTurnSchema);
+        assert(userA.messages.length === 3); // join, join and take turn
+        assert(userA.messages[2].states.length === 3); // join, join and take turn
+        assert.jsonSchema(userA.messages[2], takeTurnMessageSchema);
 
         // take as userB
         const takeTurnUserBResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, userB.userId));
 
-        // turn should be belongs to userA
+        assert(takeTurnUserBResult.type === messageConst.type.takeTurn);
         assert(takeTurnUserBResult.roomId === roomId);
-        assert(takeTurnUserBResult.activeUserId === userA.userId);
+        assert(takeTurnUserBResult.activeUserId === userA.userId); // turn should be belongs to userA
+        assert.jsonSchema(takeTurnUserAResultAgain, takeTurnSchema);
+        assert(userA.messages.length === 3); // join, join and take turn
+        assert(userA.messages[2].states.length === 3); // join, join and take turn
+        assert.jsonSchema(userA.messages[2], takeTurnMessageSchema);
 
         userA.socket.disconnect();
         userB.socket.disconnect();

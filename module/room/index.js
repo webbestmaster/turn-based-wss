@@ -8,13 +8,15 @@ let roomId = 0;
 class Room {
     constructor(options) {
         const room = this;
+        const defaultActiveUserId = 'user-id-default-' + String(Math.random()).slice(2);
 
         roomId += 1;
 
         room._attr = { // eslint-disable-line no-underscore-dangle, id-match
             connections: [],
             id: 'room-id-' + roomId,
-            activeUserId: null,
+            activeUserId: defaultActiveUserId,
+            defaultActiveUserId,
             states: [],
             settings: {},
             server: options.server
@@ -25,15 +27,21 @@ class Room {
 
     giveTurn(userId) {
         const room = this;
-        const activeUserId = room.getAttr().activeUserId;
-
+        const activeUserId = room.getActiveUserId();
         const userConnection = room.getRoomConnectionByUserId(userId);
 
         if (userConnection === null) {
             return activeUserId;
         }
 
-        if (activeUserId === null) {
+        const defaultActiveUserId = room.getDefaultActiveUserId();
+
+        if (activeUserId === defaultActiveUserId) {
+            room.pushStateForce({
+                type: messageConst.type.takeTurn,
+                roomId: room.getId(),
+                activeUserId: userId
+            });
             room.getAttr().activeUserId = userId;
             return userId;
         }
@@ -43,7 +51,7 @@ class Room {
 
     dropTurn(userId) {
         const room = this;
-        const activeUserId = room.getAttr().activeUserId;
+        const activeUserId = room.getActiveUserId();
 
         if (activeUserId !== userId) {
             return activeUserId;
@@ -109,7 +117,7 @@ class Room {
 
     pushState(userId, state) {
         const room = this;
-        const activeUserId = room.getAttr().activeUserId;
+        const activeUserId = room.getActiveUserId();
 
         if (activeUserId !== userId) {
             return null;
@@ -258,6 +266,14 @@ class Room {
 
     getAttr() {
         return this._attr; // eslint-disable-line no-underscore-dangle
+    }
+
+    getDefaultActiveUserId() {
+        return this.getAttr().defaultActiveUserId;
+    }
+
+    getActiveUserId() {
+        return this.getAttr().activeUserId;
     }
 }
 

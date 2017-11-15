@@ -33,41 +33,46 @@ Response: see schema - leaveFromRoom
 Socket: see schema - leaveFromRoomMessage, all except leaved user
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ####Take a turn.
 > GET /api/room/take-turn/:roomId/:userId
 
 Request body: empty
 
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: activeUserId
-        @type: string
+Request body: empty
+Response (success): see schema - takeTurn
+Socket (success): see schema - takeTurnMessage
+
+Response (fail): see schema - takeTurn
+Socket (fail): nothing
+
+In case your take your own turn (double taking)
+Response: see schema - takeTurn
+Socket: nothing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ####Drop the turn.
