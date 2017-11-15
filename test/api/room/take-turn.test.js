@@ -82,6 +82,7 @@ describe('GET /api/room/take-turn/:roomId/:userId', () => {
         assert(user.messages.length === 2); // join and take turn
         assert(user.messages[1].states.length === 2); // join and take turn
         assert.jsonSchema(user.messages[1], takeTurnMessageSchema);
+        assert(user.messages[1].states.last.activeUserId === user.userId);
 
         // take turn again
         takeTurnResult = await util
@@ -120,6 +121,7 @@ describe('GET /api/room/take-turn/:roomId/:userId', () => {
         assert(userA.messages.length === 3); // join, join and take turn
         assert(userA.messages[2].states.length === 3); // join, join and take turn
         assert.jsonSchema(userA.messages[2], takeTurnMessageSchema);
+        assert(userA.messages[2].states.last.activeUserId === userA.userId);
 
         // take as userA again
         const takeTurnUserAResultAgain = await util

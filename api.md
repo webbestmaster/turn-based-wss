@@ -37,8 +37,6 @@ Socket: see schema - leaveFromRoomMessage, all except leaved user
 > GET /api/room/take-turn/:roomId/:userId
 
 Request body: empty
-
-Request body: empty
 Response (success): see schema - takeTurn
 Socket (success): see schema - takeTurnMessage
 
@@ -47,6 +45,21 @@ Socket (fail): nothing
 
 In case your take your own turn (double taking)
 Response: see schema - takeTurn
+Socket: nothing
+
+
+####Drop the turn.
+> GET /api/room/drop-turn/:roomId/:userId
+
+Request body: empty
+Response (success): see schema - dropTurn
+Socket (success): see schema - dropTurnMessage
+
+Response (fail): see schema - dropTurn
+Socket (fail): nothing
+
+In case your drop your own turn (double dropping)
+Response: see schema - dropTurn
 Socket: nothing
 
 
@@ -73,19 +86,6 @@ Socket: nothing
 
 
 
-
-
-####Drop the turn.
-> GET /api/room/drop-turn/:roomId/:userId
-
-Request body: empty
-
-Response: 
-@type: json
-    @property: roomId
-        @type: string
-    @property: activeUserId
-        @type: string
 
 
 ####Get users.

@@ -57,9 +57,21 @@ class Room {
             return activeUserId;
         }
 
+        room.pushStateForce({
+            type: messageConst.type.dropTurn,
+            roomId: room.getId(),
+            activeUserId: userId
+        });
+
         const nextRoomConnection = room.getNextRoomConnectionByUserId(userId);
 
         const nextActiveUserId = nextRoomConnection.getUserId();
+
+        room.pushStateForce({
+            type: messageConst.type.takeTurn,
+            roomId: room.getId(),
+            activeUserId: nextActiveUserId
+        });
 
         room.getAttr().activeUserId = nextActiveUserId;
 
