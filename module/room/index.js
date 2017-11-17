@@ -5,6 +5,12 @@ const sha1 = require('sha1');
 const messageConst = require('./message.json');
 let roomId = 0;
 
+const timersConfig = {
+    onCreateRoom: {
+        time: 5e3
+    }
+};
+
 class Room {
     constructor(options) {
         const room = this;
@@ -19,6 +25,10 @@ class Room {
             defaultActiveUserId,
             states: [],
             settings: {},
+            timers: {
+                // will destroy room, if room has no connections
+                onCreateRoom: null
+            },
             server: options.server
         };
 
@@ -286,6 +296,30 @@ class Room {
 
     getActiveUserId() {
         return this.getAttr().activeUserId;
+    }
+
+    destroy() {
+        const room = this;
+
+        const attr = room.getAttr();
+
+        // remove from roomMaster
+        roomMaster.removeRoomById(room.getId());
+
+        // TODO: destroy ALL timers
+
+        const timers = attr.timers;
+
+        // stop all timers
+        Object.keys(timers).forEach(timerKey => {
+            timers[timerKey].stop();
+            timers[timerKey] = null;
+        });
+
+        // remove all keys
+        Object.keys(attr).forEach(key => {
+            attr[key] = null;
+        });
     }
 }
 

@@ -16,6 +16,22 @@ class RoomMaster {
         rooms.push(room);
     }
 
+    removeRoomById(roomId) {
+        const roomMaster = this;
+        const rooms = roomMaster.getRooms();
+
+        const roomToRemove = find(room => room.getId() === roomId);
+
+        if (!roomToRemove) {
+            console.log('WARNING ---> room is not exists, room id is: ' + roomId);
+            return;
+        }
+
+        const roomToRemoveIndex = rooms.indexOf(roomToRemove);
+
+        rooms.splice(roomToRemoveIndex, 1);
+    }
+
     getRoomById(roomId) {
         const roomMaster = this;
         const rooms = roomMaster.getRooms();
