@@ -93,14 +93,19 @@ class Room {
         const existRoomConnection = find(connections, connection => connection.getUserId() === userId);
 
         if (existRoomConnection) {
+            existRoomConnection.unBindEventListeners();
             existRoomConnection.setSocketId(roomConnectionOptions.socketId);
+            existRoomConnection.bindEventListeners();
             return;
         }
 
         const newRoomConnection = new RoomConnection({
             userId: roomConnectionOptions.userId,
-            socketId: roomConnectionOptions.socketId
+            socketId: roomConnectionOptions.socketId,
+            room
         });
+
+        newRoomConnection.bindEventListeners();
 
         connections.push(newRoomConnection);
 
@@ -132,6 +137,12 @@ class Room {
             roomId: room.getId(),
             userId
         });
+
+        existRoomConnection.destroy();
+
+        if (connections.length === 0) {
+            room.destroy();
+        }
     }
 
     pushState(userId, state) {
@@ -148,6 +159,12 @@ class Room {
     pushStateForce(state) {
         const room = this;
         const states = room.getStates();
+
+        // check room is destroyed
+        if (states === null) {
+            return state;
+        }
+
         const order = states.length;
         const timestamp = Date.now();
 
@@ -299,13 +316,12 @@ class Room {
         const room = this;
 
         const attr = room.getAttr();
+        const {timers} = attr;
 
         // remove from roomMaster
         roomMaster.removeRoomById(room.getId());
 
-        // TODO: destroy ALL timers
-
-        const timers = attr.timers;
+        room.getConnections().forEach(connection => connection.destroy());
 
         // stop all timers
         Object.keys(timers).forEach(timerKey => {

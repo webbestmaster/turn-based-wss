@@ -17,9 +17,11 @@ module.exports = (req, res) => {
         return;
     }
 
-
     res.json({
         roomId,
-        users: room.getConnections().map(connection => connection.getAttr())
+        users: room.getConnections().map(connection => ({
+            userId: connection.getUserId(),
+            socketId: connection.getSocketId()
+        }))
     });
 };

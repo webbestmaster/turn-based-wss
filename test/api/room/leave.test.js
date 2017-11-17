@@ -13,6 +13,7 @@ const path = require('path');
 const leaveFromRoomSchema = require('./../../schema').leaveFromRoom;
 const leaveFromRoomMessageSchema = require('./../../schema').leaveFromRoomMessage;
 const messageConst = require('./../../../module/room/message.json');
+const error = require('./../../../module/server/api/error.json');
 
 describe('GET /api/room/leave/:roomId/:userId', () => {
     let server = null;
@@ -61,19 +62,18 @@ describe('GET /api/room/leave/:roomId/:userId', () => {
         assert.jsonSchema(userB.messages[1], leaveFromRoomMessageSchema);
         assert(userB.messages.length === 2);
 
-
+        // right now room is not exists
         getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
-        assert.deepEqual(getUsersResult.users, []);
+        assert(getUsersResult.error.id === error.ROOM_NOT_FOUND.id);
+        assert(getUsersResult.error.message === error.ROOM_NOT_FOUND.message.replace('{{roomId}}', roomId));
 
         // leave from room as userB again
         const leaveUserBResultAgain = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
 
-        assert(leaveUserBResultAgain.type === messageConst.type.leaveFromRoom);
-        assert(leaveUserBResultAgain.roomId === roomId);
-        assert(leaveUserBResultAgain.userId === userB.userId);
-        assert.jsonSchema(leaveUserBResult, leaveFromRoomSchema);
+        assert(leaveUserBResultAgain.error.id === error.ROOM_NOT_FOUND.id);
+        assert(leaveUserBResultAgain.error.message === error.ROOM_NOT_FOUND.message.replace('{{roomId}}', roomId));
 
         assert(userA.messages.length === 2); // messages - userA join, userB join
         assert(userB.messages.length === 2); // messages - userB join, userA leave
@@ -81,7 +81,8 @@ describe('GET /api/room/leave/:roomId/:userId', () => {
         getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
-        assert.deepEqual(getUsersResult.users, []);
+        assert(getUsersResult.error.id === error.ROOM_NOT_FOUND.id);
+        assert(getUsersResult.error.message === error.ROOM_NOT_FOUND.message.replace('{{roomId}}', roomId));
 
         userA.socket.disconnect();
         userB.socket.disconnect();

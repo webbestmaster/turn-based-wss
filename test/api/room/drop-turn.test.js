@@ -12,9 +12,9 @@ chai.use(require('chai-json-schema'));
 const path = require('path');
 const dropTurnSchema = require('./../../schema').dropTurn;
 const dropTurnMessageSchema = require('./../../schema').dropTurnMessage;
-const takeTurnSchema = require('./../../schema').takeTurn;
 const takeTurnMessageSchema = require('./../../schema').takeTurnMessage;
 const messageConst = require('./../../../module/room/message.json');
+const error = require('./../../../module/server/api/error.json');
 
 describe('GET /api/room/drop-turn/:roomId/:userId', () => {
     let server = null;
@@ -233,12 +233,12 @@ describe('GET /api/room/drop-turn/:roomId/:userId', () => {
         // leave userB
         await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
 
-        // take turn as zero user
+        // take turn as zero user, but room is not not exists
         takeTurnZeroUserResult = await util
             .getAsJson(url + path.join('/api/room/take-turn/', roomId, zeroUser.userId));
 
-        assert(takeTurnZeroUserResult.activeUserId === userB.userId);
-        assert.jsonSchema(takeTurnZeroUserResult, takeTurnSchema);
+        assert(takeTurnZeroUserResult.error.id === error.ROOM_NOT_FOUND.id);
+        assert(takeTurnZeroUserResult.error.message === error.ROOM_NOT_FOUND.message.replace('{{roomId}}', roomId));
 
         assert(userA.messages.length === 5); // joinA, joinB, takeA, dropA, takeB [after that - leave room A]
         assert(userB.messages.length === 7); // joinB, takeA, dropA, takeB, leaveA, dropB, takeB, [cause single user], [after that - leave room B]
