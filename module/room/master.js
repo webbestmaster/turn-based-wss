@@ -20,7 +20,7 @@ class RoomMaster {
         const roomMaster = this;
         const rooms = roomMaster.getRooms();
 
-        const roomToRemove = find(room => room.getId() === roomId);
+        const roomToRemove = find(rooms, room => room.getId() === roomId);
 
         if (!roomToRemove) {
             console.log('WARNING ---> room is not exists, room id is: ' + roomId);
@@ -56,8 +56,16 @@ class RoomMaster {
 
     destroy() {
         const roomMaster = this;
+        const attr = roomMaster.getAttr();
+        const {rooms} = attr;
 
-        roomMaster.getAttr().rooms = [];
+        while (rooms.length) {
+            rooms[rooms.length - 1].destroy();
+        }
+
+        if (roomMaster.getAttr().rooms.length !== 0) {
+            console.error('--- ERROR ---> roomMaster.getAttr().rooms.length !== 0');
+        }
     }
 }
 

@@ -1,0 +1,7 @@
+{
+    "timers": {
+        "onCreateRoom": {
+            "time": 5e3
+        }
+    }
+}

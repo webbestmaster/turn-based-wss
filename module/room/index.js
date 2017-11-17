@@ -3,13 +3,8 @@ const RoomConnection = require('./room-connection').RoomConnection;
 const find = require('lodash/find');
 const sha1 = require('sha1');
 const messageConst = require('./message.json');
+const roomPrivate = require('./private');
 let roomId = 0;
-
-const timersConfig = {
-    onCreateRoom: {
-        time: 5e3
-    }
-};
 
 class Room {
     constructor(options) {
@@ -28,9 +23,11 @@ class Room {
             timers: {
                 // will destroy room, if room has no connections
                 onCreateRoom: null
-            },
+            }, // will extend by private.bindTimers
             server: options.server
         };
+
+        roomPrivate.bindTimers(room);
 
         roomMaster.push(room);
     }

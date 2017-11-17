@@ -1,3 +1,4 @@
+/* global setTimeout */
 const request = require('request');
 const socketIoClient = require('socket.io-client');
 
@@ -46,3 +47,9 @@ function getServerOptions() {
 }
 
 module.exports.getServerOptions = getServerOptions;
+
+function sleep(timeout) {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+module.exports.sleep = sleep;
