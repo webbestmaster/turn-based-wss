@@ -94,7 +94,5 @@ describe('destroy room', () => {
         const roomsIdsData = await util.getAsJson(url + '/api/room/get-ids');
 
         assert(roomsIdsData.roomIds.length === 0);
-
-        clock = sinon.useFakeTimers();
     }).timeout(roomConfig.timers.onUserDisconnect.time * 2);
 });
