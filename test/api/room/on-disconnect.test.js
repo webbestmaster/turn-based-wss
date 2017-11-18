@@ -22,7 +22,6 @@ describe('onDisconnect', () => {
 
     afterEach(() => server.destroy());
 
-    // TODO: send other users message - user is disconnect, that is all
     it('on user disconnect', async () => { // eslint-disable-line max-statements
         const userA = await util.createUser();
         const userB = await util.createUser();
