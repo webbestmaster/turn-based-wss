@@ -10,11 +10,7 @@ chai.use(require('chai-json-schema'));
 
 // self variables
 const path = require('path');
-const dropTurnSchema = require('./../../schema').dropTurn;
-const dropTurnMessageSchema = require('./../../schema').dropTurnMessage;
-const takeTurnMessageSchema = require('./../../schema').takeTurnMessage;
-const messageConst = require('./../../../module/room/message.json');
-const error = require('./../../../module/server/api/error.json');
+const userDisconnectedFromRoomMessage = require('./../../schema').userDisconnectedFromRoomMessage;
 
 describe('onDisconnect', () => {
     let server = null;
@@ -39,6 +35,15 @@ describe('onDisconnect', () => {
         await util.getAsJson(url + path.join('/api/room/join/', roomId, userB.userId, userB.socket.id));
 
         userA.socket.disconnect();
+
+        await util.sleep(1e3); // wait for socket disconnect
+
+        assert(userB.messages.length === 2); // join B, disconnect A
+        assert.jsonSchema(userB.messages[1], userDisconnectedFromRoomMessage);
+
+        await util.getAsJson(url + path.join('/api/room/leave/', roomId, userA.userId));
+        await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));
+
         userB.socket.disconnect();
     });
 });

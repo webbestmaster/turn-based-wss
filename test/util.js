@@ -17,7 +17,7 @@ module.exports.postAsJson = (url, params) =>
 
 module.exports.createUser = () => {
     const clientData = {
-        userId: 'user-id-' + String(Math.random()).slice(2),
+        userId: '',
         socket: null,
         messages: []
     };
@@ -33,7 +33,10 @@ module.exports.createUser = () => {
         socket.on('message', message => clientData.messages.push(message));
 
         socket.on('connect', () => {
-            Object.assign(clientData, {socket});
+            Object.assign(clientData, {
+                socket,
+                userId: 'user-id-' + socket.id
+            });
             resolve(clientData);
         });
     });

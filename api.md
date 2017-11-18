@@ -1,5 +1,7 @@
 ##API
 
+Schemas are here: ./test/schema.js
+
 
 ####Create a room.
 > GET /api/room/create
@@ -107,6 +109,7 @@ Socket: nothing
 
 Request: empty
 Response: {{roomId: 'string', settings: 'any'}}
+Socket: nothing
 
 
 ####Get setting
@@ -114,6 +117,7 @@ Response: {{roomId: 'string', settings: 'any'}}
 
 Request: empty
 Response: {{roomId: 'string', value: 'any'}}
+Socket: nothing
 
 
 ####Set all settings
@@ -122,6 +126,7 @@ Response: {{roomId: 'string', value: 'any'}}
 WARNING: remove previous settings
 Request: <your-settings> ({key1: value1, key2: value2})
 Response: {{roomId: 'string'}}
+Socket: nothing
 
 
 ####Set one setting
@@ -129,3 +134,10 @@ Response: {{roomId: 'string'}}
 
 Request: <your-settings> ({key: value})
 Response: {{roomId: 'string'}}
+Socket: nothing
+
+
+Events:
+### User disconnect
+When user missed connect other users get message
+Socket: see schema - userDisconnectedFromRoomMessage

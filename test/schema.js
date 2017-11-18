@@ -383,3 +383,44 @@ const getStates = {
 };
 
 module.exports.getStates = getStates;
+
+
+const userDisconnectedFromRoomMessage = {
+    type: 'object',
+    required: ['type', 'roomId', 'states'],
+    properties: {
+        type: {
+            'enum': [messageConst.type.userDisconnected]
+        },
+        roomId: {
+            type: 'string'
+        },
+        states: {
+            type: 'object',
+            required: ['last', 'length'],
+            properties: {
+                last: {
+                    type: 'object',
+                    required: ['type', 'roomId', 'userId', 'meta'],
+                    properties: {
+                        type: {
+                            'enum': [messageConst.type.userDisconnected]
+                        },
+                        roomId: {
+                            type: 'string'
+                        },
+                        userId: {
+                            type: 'string'
+                        },
+                        meta
+                    }
+                },
+                length: {
+                    type: 'number'
+                }
+            }
+        }
+    }
+};
+
+module.exports.userDisconnectedFromRoomMessage = userDisconnectedFromRoomMessage;
