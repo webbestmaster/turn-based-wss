@@ -57,6 +57,7 @@ class Server {
                 resolve();
             });
 
+            /*
             // just debug info
             socketIoServer.on('connection', socket => {
                 console.log(`Client connected [id=${socket.id}]`);
@@ -65,15 +66,17 @@ class Server {
                     console.log(`Client disconnected [id=${socket.id}]`);
                 });
             });
+            */
         });
     }
 
     destroy() {
         const server = this;
-        const expressApp = server.getExpressApp();
         const httpServer = server.getHttpServer();
         const socketIoServer = server.getSocketIoServer();
         const port = server.getOptions().port;
+
+        // const expressApp = server.getExpressApp();
 
         roomMaster.destroy();
 
