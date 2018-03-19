@@ -121,7 +121,7 @@ Socket: nothing
 
 
 ####Set all settings
-> GET /api/room/set-all-settings/:roomId
+> POST /api/room/set-all-settings/:roomId
 
 WARNING: remove previous settings
 Request: <your-settings> ({key1: value1, key2: value2})
