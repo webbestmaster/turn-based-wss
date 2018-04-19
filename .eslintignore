@@ -4,6 +4,9 @@
 # npm
 node_modules
 
+# test
+/coverage
+
 # dist
 #/dist/
 #/prod/
