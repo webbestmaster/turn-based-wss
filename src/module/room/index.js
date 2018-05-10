@@ -336,4 +336,4 @@ class Room {
     }
 }
 
-module.exports.Room = Room;
+export {Room};
