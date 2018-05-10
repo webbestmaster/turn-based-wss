@@ -1,7 +1,7 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
 const assert = chai.assert;
-const Server = require('./../../../module/server').Server;
+const Server = require('./../../../dist/module/server').Server;
 const util = require('./../../util');
 const serverOptions = util.getServerOptions();
 const url = 'http://localhost:' + serverOptions.port;
@@ -13,8 +13,8 @@ const path = require('path');
 const dropTurnSchema = require('./../../schema').dropTurn;
 const dropTurnMessageSchema = require('./../../schema').dropTurnMessage;
 const takeTurnMessageSchema = require('./../../schema').takeTurnMessage;
-const messageConst = require('./../../../module/room/message.json');
-const error = require('./../../../module/server/api/error.json');
+const messageConst = require('./../../../dist/module/room/message.json');
+const error = require('./../../../dist/module/server/api/error.json');
 
 describe('GET /api/room/drop-turn/:roomId/:userId', () => {
     let server = null;

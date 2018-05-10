@@ -1,7 +1,7 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
 const assert = chai.assert;
-const Server = require('./../../../module/server').Server;
+const Server = require('./../../../dist/module/server').Server;
 const util = require('./../../util');
 const serverOptions = util.getServerOptions();
 const url = 'http://localhost:' + serverOptions.port;
