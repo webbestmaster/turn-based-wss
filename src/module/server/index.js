@@ -1,23 +1,27 @@
+// @flow
+
+/* eslint consistent-this: ["error", "server"] */
+
 /* global __dirname */
 const ip = require('ip'); // eslint-disable-line id-length
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const apiRouter = require('./api-router').apiRouter;
-const roomMaster = require('../room/master').roomMaster;
+const {apiRouter} = require('./api-router');
+const {roomMaster} = require('../room/master');
 
 const serverDefaultOptions = {
     port: 3000,
     'static': 'static'
 };
 
+/**
+ *
+ * @param {Object} options - options for new TBW
+ *      @param {number} options.port - port to lister
+ *      @param {string} options.static - path to static files
+ */
 class Server {
-    /**
-     *
-     * @param {Object} options - options for new TBW
-     *      @param {number} options.port - port to lister
-     *      @param {string} options.static - path to static files
-     */
     constructor(options) {
         const server = this;
 

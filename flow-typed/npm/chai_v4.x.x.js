@@ -1,7 +1,7 @@
 // flow-typed signature: c46b11661e19e83f574595250845c8e1
 // flow-typed version: a5452d3be3/chai_v4.x.x/flow_>=v0.25.0
 
-declare module "chai" {
+declare module 'chai' {
   declare type ExpectChain<T> = {
     and: ExpectChain<T>,
     at: ExpectChain<T>,
@@ -49,7 +49,7 @@ declare module "chai" {
     nested: ExpectChain<T>,
     property: <P>(
       name: string,
-      value?: P, 
+      value?: P,
       message?: string
     ) => ExpectChain<P> & ((name: string) => ExpectChain<mixed>),
 

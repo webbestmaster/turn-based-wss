@@ -1,7 +1,7 @@
 // flow-typed signature: 1eed102f1f3f03ab47e98615df15dfd3
 // flow-typed version: 51b71b47ea/socket.io-client_v2.x.x/flow_>=v0.34.x
 
-declare module "socket.io-client" {
+declare module 'socket.io-client' {
   declare type Callback = (...args: any[]) => void;
 
   declare type ManagerOptions = $Shape<{

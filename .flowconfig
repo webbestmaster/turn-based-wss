@@ -1,6 +1,7 @@
 [ignore]
 ./_before/**/
 ./_before_/**/
+./dist/*
 
 [include]
 ./flow-typed/**/

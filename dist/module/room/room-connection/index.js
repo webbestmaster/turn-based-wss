@@ -1,8 +1,15 @@
-const messageConst = require('../message.json');
-const roomConfig = require('../config.json');
+// 
+
+/* eslint consistent-this: ["error", "roomConnection"] */
+
+const messageConst = require('./../message.js');
+const roomConfig = require('./../config.js');
 const Stopwatch = require('timer-stopwatch');
+const {Room} = require('./../index');
+
 
 class RoomConnection {
+
     /**
      *
      * @constructor
@@ -34,7 +41,9 @@ class RoomConnection {
             return;
         }
 
-        socket.on('disconnect', () => roomConnection.onDisconnect());
+        socket.on('disconnect', () => {
+            roomConnection.onDisconnect();
+        });
     }
 
     unBindEventListeners() {

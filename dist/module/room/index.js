@@ -1,8 +1,12 @@
+// 
+
+/* eslint consistent-this: ["error", "room"] */
+
 const {roomMaster} = require('./master');
 const {RoomConnection} = require('./room-connection/index');
 const find = require('lodash/find');
 const sha1 = require('sha1');
-const messageConst = require('./message.json');
+const messageConst = require('./message.js');
 const roomPrivate = require('./private');
 let roomId = 0;
 

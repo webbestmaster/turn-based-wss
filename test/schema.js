@@ -1,4 +1,4 @@
-const messageConst = require('./../dist/module/room/message.json');
+const messageConst = require('./../dist/module/room/message');
 
 
 const meta = {

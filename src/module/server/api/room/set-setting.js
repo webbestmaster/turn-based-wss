@@ -1,5 +1,7 @@
-const roomMaster = require('../../../room/master').roomMaster;
-const error = require('../error.json');
+// @flow
+
+const {roomMaster} = require('../../../room/master');
+const error = require('../error.js');
 
 module.exports = (req, res) => {
     const {params, body} = req;

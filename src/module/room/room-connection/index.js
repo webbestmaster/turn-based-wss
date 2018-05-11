@@ -1,8 +1,26 @@
-const messageConst = require('../message.json');
-const roomConfig = require('../config.json');
+// @flow
+
+/* eslint consistent-this: ["error", "roomConnection"] */
+
+const messageConst = require('./../message.js');
+const roomConfig = require('./../config.js');
 const Stopwatch = require('timer-stopwatch');
+const {Room} = require('./../index');
+
+type RoomConnectionConstructorOptionsType = {|
+    +socketId: string,
+    +userId: string,
+    +room: Room
+|};
 
 class RoomConnection {
+    _attr: {| // eslint-disable-line no-underscore-dangle, id-match
+        ...RoomConnectionConstructorOptionsType,
+        +timers: {|
+            onDisconnect: null
+        |}
+    |};
+
     /**
      *
      * @constructor
@@ -11,7 +29,7 @@ class RoomConnection {
      *      @param {String} options.userId - user's id
      *      @param {Object} options.room - parent room
      */
-    constructor(options) {
+    constructor(options: RoomConnectionConstructorOptionsType) {
         const roomConnection = this;
 
         roomConnection._attr = { // eslint-disable-line no-underscore-dangle, id-match
@@ -34,7 +52,9 @@ class RoomConnection {
             return;
         }
 
-        socket.on('disconnect', () => roomConnection.onDisconnect());
+        socket.on('disconnect', () => {
+            roomConnection.onDisconnect();
+        });
     }
 
     unBindEventListeners() {
@@ -88,7 +108,7 @@ class RoomConnection {
         return roomConnection.getAttr().userId;
     }
 
-    setSocketId(socketId) {
+    setSocketId(socketId: string) {
         const roomConnection = this;
 
         roomConnection.getAttr().socketId = socketId;

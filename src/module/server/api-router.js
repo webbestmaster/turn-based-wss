@@ -1,3 +1,5 @@
+// @flow
+
 const bodyParser = require('body-parser');
 
 const apiRoomCreate = require('./api/room/create');

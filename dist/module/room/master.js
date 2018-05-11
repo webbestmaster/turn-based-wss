@@ -1,3 +1,7 @@
+// 
+
+/* eslint consistent-this: ["error", "roomMaster"] */
+
 const find = require('lodash/find');
 
 class RoomMaster {

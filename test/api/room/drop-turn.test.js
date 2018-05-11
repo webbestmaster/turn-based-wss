@@ -13,8 +13,8 @@ const path = require('path');
 const dropTurnSchema = require('./../../schema').dropTurn;
 const dropTurnMessageSchema = require('./../../schema').dropTurnMessage;
 const takeTurnMessageSchema = require('./../../schema').takeTurnMessage;
-const messageConst = require('./../../../dist/module/room/message.json');
-const error = require('./../../../dist/module/server/api/error.json');
+const messageConst = require('./../../../dist/module/room/message');
+const error = require('./../../../dist/module/server/api/error');
 
 describe('GET /api/room/drop-turn/:roomId/:userId', () => {
     let server = null;

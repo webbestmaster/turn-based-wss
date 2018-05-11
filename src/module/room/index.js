@@ -1,10 +1,14 @@
+// @flow
+
+/* eslint consistent-this: ["error", "room"] */
+
 const {roomMaster} = require('./master');
 const {RoomConnection} = require('./room-connection/index');
 const find = require('lodash/find');
 const sha1 = require('sha1');
-const messageConst = require('./message.json');
+const messageConst = require('./message.js');
 const roomPrivate = require('./private');
-let roomId:number = 0;
+let roomId = 0;
 
 class Room {
     constructor(options) {
@@ -336,4 +340,4 @@ class Room {
     }
 }
 
-export {Room};
+module.exports.Room = Room;

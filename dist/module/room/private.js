@@ -1,6 +1,8 @@
-const Stopwatch = require('timer-stopwatch');
-const roomConfig = require('./config.json');
+// 
 
+const Stopwatch = require('timer-stopwatch');
+const roomConfig = require('./config.js');
+const {Room} = require('./index');
 const timersConfig = roomConfig.timers;
 
 function bindTimers(room) {
