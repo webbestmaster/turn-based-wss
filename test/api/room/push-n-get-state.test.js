@@ -1,7 +1,7 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
 const assert = chai.assert;
-const Server = require('./../../../dist/module/server').Server;
+const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const serverOptions = util.getServerOptions();
 const url = 'http://localhost:' + serverOptions.port;
@@ -15,7 +15,7 @@ const pushStateFailSchema = require('./../../schema').pushStateFail;
 const stateSchema = require('./../../schema').state;
 const stateArraySchema = require('./../../schema').stateArraySchema;
 const pushStateMessageSchema = require('./../../schema').pushStateMessage;
-const messageConst = require('./../../../dist/module/room/message');
+const messageConst = require('./../../../module/room/message.json');
 
 describe('POST /api/room/push-state/:roomId/:userId', () => {
     let server = null;

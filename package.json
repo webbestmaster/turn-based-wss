@@ -6,11 +6,7 @@
   "scripts": {
     "start-server": "node ./app.js",
     "lint": "eslint .",
-    "lint-fix": "eslint ./src/ --fix",
-    "flow": "flow",
-    "flow:check": "flow check ./src/",
-    "flow:build": "flow-remove-types ./src/ -d ./dist/ --all --pretty",
-    "flow:deps": "flow-typed install",
+    "lint-fix": "eslint . --fix",
     "test": "mocha ./test/**/*.test.js",
     "test-cover": "istanbul cover --root ./ _mocha ./test/**/*.test.js"
   },
@@ -39,10 +35,6 @@
     "chai": "^4.1.2",
     "chai-json-schema": "^1.5.0",
     "eslint": "^4.19.1",
-    "eslint-plugin-flowtype": "^2.46.3",
-    "flow-bin": "^0.71.0",
-    "flow-remove-types": "^1.2.3",
-    "flow-typed": "^2.4.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1",
     "request": "^2.85.0",

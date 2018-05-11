@@ -1,7 +1,7 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
 const assert = chai.assert;
-const Server = require('./../../../dist/module/server').Server;
+const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const serverOptions = util.getServerOptions();
 const url = 'http://localhost:' + serverOptions.port;
@@ -12,7 +12,7 @@ chai.use(require('chai-json-schema'));
 const path = require('path');
 const takeTurnSchema = require('./../../schema').takeTurn;
 const takeTurnMessageSchema = require('./../../schema').takeTurnMessage;
-const messageConst = require('./../../../dist/module/room/message');
+const messageConst = require('./../../../module/room/message.json');
 
 describe('GET /api/room/take-turn/:roomId/:userId', () => {
     let server = null;

@@ -1,9 +1,6 @@
-// @flow
-
 // create TBW
-const {Server} = require('./dist/module/server/index');
-const appOptions = require('./app-setting.js');
-
+const Server = require('./module/server/index').Server;
+const appOptions = require('./app.json');
 const server = new Server({
     port: appOptions.serverOptions.port,
     'static': appOptions.serverOptions.static

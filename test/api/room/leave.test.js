@@ -1,7 +1,7 @@
 /* global describe, it, before, after, beforeEach, afterEach */
 const chai = require('chai');
 const assert = chai.assert;
-const Server = require('./../../../dist/module/server').Server;
+const Server = require('./../../../module/server').Server;
 const util = require('./../../util');
 const serverOptions = util.getServerOptions();
 const url = 'http://localhost:' + serverOptions.port;
@@ -12,8 +12,8 @@ chai.use(require('chai-json-schema'));
 const path = require('path');
 const leaveFromRoomSchema = require('./../../schema').leaveFromRoom;
 const leaveFromRoomMessageSchema = require('./../../schema').leaveFromRoomMessage;
-const messageConst = require('./../../../dist/module/room/message');
-const error = require('./../../../dist/module/server/api/error');
+const messageConst = require('./../../../module/room/message.json');
+const error = require('./../../../module/server/api/error.json');
 
 describe('GET /api/room/leave/:roomId/:userId', () => {
     let server = null;
