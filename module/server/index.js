@@ -21,24 +21,16 @@ class Server {
     constructor(options) {
         const server = this;
 
-        const attr = {
-            options: Object.assign(serverDefaultOptions, options),
-            expressApp: null,
-            httpServer: null,
-            socketIoServer: null
-        };
-
         const expressApp = express();
         const httpServer = http.Server(expressApp); // eslint-disable-line new-cap
         const socketIoServer = socketIo(httpServer);
 
-        Object.assign(attr, {
+        server._attr = { // eslint-disable-line no-underscore-dangle, id-match
+            options: Object.assign(serverDefaultOptions, options),
             expressApp,
             httpServer,
             socketIoServer
-        });
-
-        server._attr = attr; // eslint-disable-line no-underscore-dangle, id-match
+        };
     }
 
     run() {
