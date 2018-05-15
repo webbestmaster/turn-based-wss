@@ -1,6 +1,0 @@
-{
-    "serverOptions": {
-        "port": "3001",
-        "static": "front"
-    }
-}
