@@ -10,6 +10,7 @@ node_modules
 # dist
 #/dist/
 #/prod/
+/front/
 
 # polyfill
 #/www/js/lib/polyfill
