@@ -1,6 +1,7 @@
 /* global __dirname */
 const ip = require('ip'); // eslint-disable-line id-length
 const express = require('express');
+const spa = require('express-spa');
 const http = require('http');
 const socketIo = require('socket.io');
 const apiRouter = require('./api-router').apiRouter;
@@ -38,10 +39,12 @@ class Server {
             const server = this;
             const httpServer = server.getHttpServer();
             const options = server.getOptions();
-
-            server.getExpressApp().use(express.static(options.static));
+            const expressApp = server.getExpressApp();
 
             apiRouter.bindRoutes(server);
+
+            expressApp.use(express.static(options.static));
+            expressApp.use(spa(options.static + '/index.html'));
 
             httpServer.listen(options.port, () => {
                 console.log('TBW listening on ' + ip.address() + ':' + options.port);
