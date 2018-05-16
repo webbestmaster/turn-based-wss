@@ -37,10 +37,9 @@ class Server {
         return new Promise((resolve, reject) => {
             const server = this;
             const httpServer = server.getHttpServer();
-            const socketIoServer = server.getSocketIoServer();
             const options = server.getOptions();
 
-            server.getExpressApp().use(express.static(server.getOptions().static));
+            server.getExpressApp().use(express.static(options.static));
 
             apiRouter.bindRoutes(server);
 
@@ -51,6 +50,7 @@ class Server {
 
             /*
             // just debug info
+            const socketIoServer = server.getSocketIoServer();
             socketIoServer.on('connection', socket => {
                 console.log(`Client connected [id=${socket.id}]`);
 
