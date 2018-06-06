@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const compression = require('compression');
 
 const apiRoomCreate = require('./api/room/create');
 const apiRoomGetIds = require('./api/room/get-ids');
@@ -24,6 +25,8 @@ const apiGetStatesFromHash = require('./api/room/get-states-from-hash');
 module.exports.apiRouter = {
     bindRoutes: server => {
         const expressApp = server.getExpressApp();
+
+        expressApp.use(compression());
 
         // fix CORS
         expressApp.use((req, res, next) => {
