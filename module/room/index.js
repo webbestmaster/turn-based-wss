@@ -100,6 +100,7 @@ class Room {
         }
 
         const newRoomConnection = new RoomConnection({
+            type: 'human',
             userId: roomConnectionOptions.userId,
             socketId: roomConnectionOptions.socketId,
             room
@@ -115,6 +116,33 @@ class Room {
             userId: roomConnectionOptions.userId,
             socketId: roomConnectionOptions.socketId
         });
+    }
+
+    makeBot() {
+        const room = this;
+        const connections = room.getConnections();
+        const userId = 'bot-user-id-' + String(Math.random()).slice(2);
+        const socketId = 'bot-socket-id-' + String(Math.random()).slice(2);
+
+        const newRoomConnection = new RoomConnection({
+            type: 'bot',
+            userId,
+            socketId,
+            room
+        });
+
+        newRoomConnection.bindEventListeners();
+
+        connections.push(newRoomConnection);
+
+        room.pushStateForce({
+            type: messageConst.type.joinIntoRoom,
+            roomId: room.getId(),
+            userId,
+            socketId
+        });
+
+        return {userId, socketId};
     }
 
     leave(userId) {
@@ -140,7 +168,9 @@ class Room {
 
         existRoomConnection.destroy();
 
-        if (connections.length === 0) {
+        const humanConnectionList = connections.filter(connection => connection.getType() !== 'bot');
+
+        if (humanConnectionList.length === 0) {
             room.destroy();
         }
     }
@@ -198,7 +228,13 @@ class Room {
         const socketIoServer = server.getSocketIoServer();
 
         connections.forEach(connection => {
-            socketIoServer.to(connection.getAttr().socketId).emit('message', data);
+            const connectionAttr = connection.getAttr();
+
+            if (connectionAttr.type === 'bot') {
+                return;
+            }
+
+            socketIoServer.to(connectionAttr.socketId).emit('message', data);
         });
     }
 

@@ -5,6 +5,7 @@ const apiRoomCreate = require('./api/room/create');
 const apiRoomGetIds = require('./api/room/get-ids');
 
 const apiRoomJoin = require('./api/room/join');
+const apiRoomMakeBot = require('./api/room/make-bot');
 const apiRoomLeave = require('./api/room/leave');
 
 const apiRoomDropTurn = require('./api/room/drop-turn');
@@ -23,7 +24,7 @@ const apiGetAllStates = require('./api/room/get-all-states');
 const apiGetStatesFromHash = require('./api/room/get-states-from-hash');
 
 module.exports.apiRouter = {
-    bindRoutes: server => {
+    bindRoutes: server => { // eslint-disable-line max-statements
         const expressApp = server.getExpressApp();
 
         expressApp.use(compression());
@@ -52,6 +53,11 @@ module.exports.apiRouter = {
          * join to room
          */
         expressApp.get('/api/room/join/:roomId/:userId/:socketId', apiRoomJoin);
+
+        /**
+         * make bot
+         */
+        expressApp.get('/api/room/make-bot/:roomId', apiRoomMakeBot);
 
         /**
          * leave to room
