@@ -78,8 +78,8 @@ describe('GET /api/room/join/:roomId/:userId/:socketId', () => {
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
         assert.deepEqual(getUsersResult.users, [
-            {userId: userA.userId, socketId: userA.socket.id},
-            {userId: userB.userId, socketId: userB.socket.id}
+            {userId: userA.userId, socketId: userA.socket.id, type: 'human'},
+            {userId: userB.userId, socketId: userB.socket.id, type: 'human'}
         ]);
 
         // try to rejoin
@@ -114,8 +114,8 @@ describe('GET /api/room/join/:roomId/:userId/:socketId', () => {
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
         assert.deepEqual(getUsersResult.users, [
-            {userId: userA.userId, socketId: userA.socket.id},
-            {userId: userB.userId, socketId: userB.socket.id}
+            {userId: userA.userId, socketId: userA.socket.id, type: 'human'},
+            {userId: userB.userId, socketId: userB.socket.id, type: 'human'}
         ]);
 
         userA.socket.disconnect();

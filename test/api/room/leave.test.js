@@ -50,7 +50,7 @@ describe('GET /api/room/leave/:roomId/:userId', () => {
         let getUsersResult = await util
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
-        assert.deepEqual(getUsersResult.users, [{userId: userB.userId, socketId: userB.socket.id}]);
+        assert.deepEqual(getUsersResult.users, [{userId: userB.userId, socketId: userB.socket.id, type: 'human'}]);
 
         // leave from room as userB
         const leaveUserBResult = await util.getAsJson(url + path.join('/api/room/leave/', roomId, userB.userId));

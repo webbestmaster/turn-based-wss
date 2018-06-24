@@ -21,7 +21,8 @@ module.exports = (req, res) => {
         roomId,
         users: room.getConnections().map(connection => ({
             userId: connection.getUserId(),
-            socketId: connection.getSocketId()
+            socketId: connection.getSocketId(),
+            type: connection.getType()
         }))
     });
 };

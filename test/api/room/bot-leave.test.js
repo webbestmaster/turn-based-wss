@@ -53,14 +53,8 @@ describe('GET /api/room/leave/:roomId/:userId', () => {
             .getAsJson(url + path.join('/api/room/get-users/', roomId));
 
         assert.deepEqual(getUsersResult.users, [
-            {
-                userId: userB.userId,
-                socketId: userB.socket.id
-            },
-            {
-                userId: bot.userId,
-                socketId: bot.socketId
-            }
+            {userId: userB.userId, socketId: userB.socket.id, type: 'human'},
+            {userId: bot.userId, socketId: bot.socketId, type: 'bot'}
         ]);
 
 
