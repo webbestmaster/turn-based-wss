@@ -118,18 +118,13 @@ class Room {
         });
     }
 
-    makeBot() {
+    makeUser(type) {
         const room = this;
         const connections = room.getConnections();
         const userId = 'bot-user-id-' + String(Math.random()).slice(2);
         const socketId = 'bot-socket-id-' + String(Math.random()).slice(2);
 
-        const newRoomConnection = new RoomConnection({
-            type: 'bot',
-            userId,
-            socketId,
-            room
-        });
+        const newRoomConnection = new RoomConnection({type, userId, socketId, room});
 
         newRoomConnection.bindEventListeners();
 
