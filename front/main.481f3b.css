@@ -308,6 +308,7 @@ body {
   -webkit-box-pack: center;
      -moz-box-pack: center;
           justify-content: center;
+  min-height: 41px;
   padding: 10px; }
 
 ._862510 {
@@ -331,10 +332,9 @@ body {
 
 ._327f99 {
   font-size: 19px;
-  line-height: 19px;
+  line-height: 28px;
   margin-left: 47px;
   margin-right: 7px;
-  margin-top: 5px;
   text-align: right;
   text-shadow: 3px 3px 0 #000; }
 
@@ -534,7 +534,8 @@ body {
   padding-bottom: 20px; }
 
 .ae3d1d {
-  min-width: 121px;
+  display: block;
+  min-width: 140px;
   position: relative; }
 
 ._157dd4 {
@@ -566,6 +567,16 @@ body {
     top: 12px;
     width: 0;
     z-index: 0; }
+
+._0fc76d {
+  float: left;
+  height: 24px;
+  left: 5px;
+  pointer-events: none;
+  position: relative;
+  top: 5px;
+  width: 24px;
+  z-index: 1; }
 
 .d90df4,
 ._7cced8 {
@@ -612,6 +623,7 @@ body {
   -webkit-box-pack: center;
      -moz-box-pack: center;
           justify-content: center;
+  min-height: 41px;
   padding: 10px; }
 
 ._1db1ca {
@@ -635,10 +647,9 @@ body {
 
 ._6dc6ae {
   font-size: 19px;
-  line-height: 19px;
+  line-height: 28px;
   margin-left: 47px;
   margin-right: 7px;
-  margin-top: 5px;
   text-align: right;
   text-shadow: 3px 3px 0 #000; }
 
