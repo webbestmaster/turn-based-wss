@@ -1,12 +1,16 @@
 {
     "parser": "babel-eslint",
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:node/recommended"
+    ],
     "globals": {
         "require": true,
         "module": true,
         "console": true
     },
     "plugins": [
+        "node"
     ],
     "env": {
         "es6": true,
@@ -14,6 +18,7 @@
         "node": false
     },
     "rules": {
+        "node/no-unpublished-require": 0,
         "no-console": 0,
         "no-empty-label": 0,
         "no-warning-comments": 0,

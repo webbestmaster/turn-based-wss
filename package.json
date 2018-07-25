@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "turn based wss",
   "main": "index.js",
+  "engines": {
+    "node": ">=10.6.0"
+  },
   "scripts": {
     "start": "node ./app.js",
     "lint": "eslint .",
@@ -37,6 +40,7 @@
     "chai": "^4.1.2",
     "chai-json-schema": "^1.5.0",
     "eslint": "^5.2.0",
+    "eslint-plugin-node": "^7.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1",
     "request": "^2.86.0",
