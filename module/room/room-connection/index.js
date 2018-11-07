@@ -59,7 +59,7 @@ class RoomConnection {
 
         if (socket === null) {
             // if socket has been disconnected from client, socket missing from socketIoServer
-            console.error('--- ERROR ---> unBindEventListeners: Can not find socket with id:', socketId);
+            console.warn('WARN: unBindEventListeners: Can not find socket with id:', socketId);
             return;
         }
 
