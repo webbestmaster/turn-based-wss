@@ -31,8 +31,8 @@
     "ip": "^1.1.5",
     "lodash": "^4.17.11",
     "sha1": "^1.1.1",
-    "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "timer-stopwatch": "^0.2.0"
   },
   "devDependencies": {
